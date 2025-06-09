@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oral Histories Table with Filters and Details</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+    th { background-color: #f4f4f4; }
+    td {max-width:100px}
+    input.filter-input { width: 100%; box-sizing: border-box; padding: 4px; margin-top: 4px; }
+    .collapse-content {
+      display: none;
+      background-color: #fafafa;
+      border-left: 3px solid #ccc;
+      padding: 10px;
+      font-style: italic;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #007BFF;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Oral Histories Table</h1>
+  <table id="dataTable">
+    <thead>
+      <tr id="headerRow"></tr>
+      <tr id="filterRow"></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let originalData = [];
+    let headers = [];
+
+    function createTable(data) {
+      const headerRow = document.getElementById("headerRow");
+      const filterRow = document.getElementById("filterRow");
+      const tableBody = document.querySelector("#dataTable tbody");
+
+      // Clear existing rows
+      headerRow.innerHTML = "";
+      filterRow.innerHTML = "";
+      tableBody.innerHTML = "";
+
+      headers = Object.keys(data[0]);
+      const hasProjectOverview = headers.includes("Project Overview");
+
+      // Create header cells
+      headers.forEach((header, i) => {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headerRow.appendChild(th);
+
+        // Add filter input
+        const filterCell = document.createElement("th");
+        const input = document.createElement("input");
+        input.className = "filter-input";
+        input.dataset.index = i;
+        input.placeholder = `Filter ${header}`;
+        input.addEventListener("input", applyFilters);
+        filterCell.appendChild(input);
+        filterRow.appendChild(filterCell);
+      });
+
+      // Fill table
+      fillTable(data);
+    }
+
+    function fillTable(data) {
+      const tableBody = document.querySelector("#dataTable tbody");
+      tableBody.innerHTML = "";
+
+      data.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+        headers.forEach((header, i) => {
+          const td = document.createElement("td");
+
+          td.appendChild(document.createTextNode(row[header] || ""));
+          tr.appendChild(td);
+
+          // Add toggle button for Project Overview in first column
+          if (i === 1 && row["Project Overview"]) {
+            const btn = document.createElement("button");
+            btn.className = "toggle-btn";
+            btn.textContent = "Show Project Overview";
+            btn.addEventListener("click", () => {
+              const collapseRow = document.getElementById(`collapse-${rowIndex}`);
+              if (collapseRow.style.display === "none") {
+                collapseRow.style.display = "table-row";
+                btn.textContent = "Hide Project Overview";
+              } else {
+                collapseRow.style.display = "none";
+                btn.textContent = "Show Project Overview";
+              }
+            });
+            td.appendChild(btn);
+            td.appendChild(document.createElement("br"));
+          }
+        });
+
+        // Create collapsible row
+        const collapseTr = document.createElement("tr");
+        collapseTr.id = `collapse-${rowIndex}`;
+        collapseTr.className = "collapse-content";
+        collapseTr.style.display = "none";
+
+        const collapseTd = document.createElement("td");
+        collapseTd.colSpan = headers.length;
+        collapseTd.innerHTML = `<strong>Project Overview:</strong><br>${row["Project Overview"] || "N/A"}`;
+        collapseTr.appendChild(collapseTd);
+
+        tableBody.appendChild(tr);
+        tableBody.appendChild(collapseTr);
+      });
+    }
+
+    function applyFilters() {
+      const filters = Array.from(document.querySelectorAll(".filter-input")).map(input => input.value.toLowerCase());
+
+      const filteredData = originalData.filter(row => {
+        return headers.every((header, i) => {
+          return row[header]?.toString().toLowerCase().includes(filters[i]);
+        });
+      });
+
+      fillTable(filteredData);
+    }
+
+    Papa.parse("oral_histories.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        originalData = results.data.filter(row => Object.values(row).some(cell => cell?.trim()));
+        createTable(originalData);
+      }
+    });
+  </script>
+</body>
+</html>

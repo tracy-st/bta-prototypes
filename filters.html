@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oral Histories Table</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    input.filter-input { width: 100%; box-sizing: border-box; padding: 4px; margin-top: 4px; }
+    thead input { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Oral Histories Table with Column Filters</h1>
+  <table id="dataTable">
+    <thead>
+      <tr id="headerRow"></tr>
+      <tr id="filterRow"></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let originalData = [];
+    let headers = [];
+
+    function createTable(data) {
+      const tableHead = document.querySelector("#dataTable thead");
+      const headerRow = document.getElementById("headerRow");
+      const filterRow = document.getElementById("filterRow");
+      const tableBody = document.querySelector("#dataTable tbody");
+
+      // Clear existing rows
+      headerRow.innerHTML = "";
+      filterRow.innerHTML = "";
+      tableBody.innerHTML = "";
+
+      headers = Object.keys(data[0]);
+
+      // Create column headers
+      headers.forEach((header, i) => {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headerRow.appendChild(th);
+
+        // Create filter input
+        const filterCell = document.createElement("th");
+        const input = document.createElement("input");
+        input.className = "filter-input";
+        input.dataset.index = i;
+        input.placeholder = `Filter ${header}`;
+        input.addEventListener("input", applyFilters);
+        filterCell.appendChild(input);
+        filterRow.appendChild(filterCell);
+      });
+
+      // Fill table with data
+      fillTable(data);
+    }
+
+    function fillTable(data) {
+      const tableBody = document.querySelector("#dataTable tbody");
+      tableBody.innerHTML = "";
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        headers.forEach(header => {
+          const td = document.createElement("td");
+          td.textContent = row[header] || "";
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function applyFilters() {
+      const filters = Array.from(document.querySelectorAll(".filter-input")).map(input => input.value.toLowerCase());
+
+      const filteredData = originalData.filter(row => {
+        return headers.every((header, i) => {
+          return row[header]?.toString().toLowerCase().includes(filters[i]);
+        });
+      });
+
+      fillTable(filteredData);
+    }
+
+    // Load CSV and initialize table
+    Papa.parse("oral_histories.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        originalData = results.data.filter(row => Object.values(row).some(cell => cell?.trim()));
+        createTable(originalData);
+      }
+    });
+  </script>
+</body>
+</html>

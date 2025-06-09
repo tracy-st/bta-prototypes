@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oral Histories Table</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Oral Histories</h1>
+  <input type="text" id="searchInput" placeholder="Filter by participant name or state..." />
+
+  <table id="dataTable">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#dataTable tbody tr");
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", filterTable);
+
+    Papa.parse("oral_histories.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const data = results.data;
+        const tableHead = document.querySelector("#dataTable thead");
+        const tableBody = document.querySelector("#dataTable tbody");
+
+        if (data.length === 0) return;
+
+        // Add headers
+        const headers = Object.keys(data[0]);
+        const headerRow = document.createElement("tr");
+        headers.forEach(header => {
+          const th = document.createElement("th");
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+        tableHead.appendChild(headerRow);
+
+        // Add data rows
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          headers.forEach(header => {
+            const td = document.createElement("td");
+            td.textContent = row[header];
+            tr.appendChild(td);
+          });
+          tableBody.appendChild(tr);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

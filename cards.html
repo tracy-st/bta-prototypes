@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oral Histories Cards</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .filters input {
+      padding: 6px;
+      width: 200px;
+    }
+    .card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 16px;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .project-overview {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-left: 4px solid #888;
+      font-style: italic;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: #007BFF;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9em;
+      margin-top: 10px;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Oral Histories</h1>
+  <div class="filters" id="filterInputs"></div>
+  <div id="cardContainer"></div>
+
+  <script>
+    let originalData = [];
+    let headers = [];
+
+    function createFilters() {
+      const filterDiv = document.getElementById("filterInputs");
+      filterDiv.innerHTML = "";
+
+      headers.forEach((header, i) => {
+        const input = document.createElement("input");
+        input.placeholder = `Filter ${header}`;
+        input.className = "filter-input";
+        input.dataset.index = i;
+        input.addEventListener("input", applyFilters);
+        filterDiv.appendChild(input);
+      });
+    }
+
+    function renderCards(data) {
+      const container = document.getElementById("cardContainer");
+      container.innerHTML = "";
+
+      data.forEach((row, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent = row["Participant Name"] || "Unnamed Participant";
+        card.appendChild(title);
+
+        // Add remaining fields
+
+           headers.forEach(header => {
+          if (header !== "Participant Name" && header !== "Project Overview") {
+            const p = document.createElement("p");
+            if (header === "Link" && row[header]) {
+            p.innerHTML = `<strong>Recording/Finding Aid/Transcript:</strong> <a href="${row[header]}" target="_blank">Link</a>`;
+            } else {
+            p.innerHTML = `<strong>${header}:</strong> ${row[header] || ""}`;
+            }
+            card.appendChild(p);
+
+          }
+        });
+
+
+
+        // Toggle button
+        if (row["Project Overview"]) {
+          const toggleBtn = document.createElement("button");
+          toggleBtn.className = "toggle-btn";
+          toggleBtn.textContent = "Show Project Overview";
+
+          const overviewDiv = document.createElement("div");
+          overviewDiv.className = "project-overview";
+          overviewDiv.innerHTML = `<strong>Project Overview:</strong><br>${row["Project Overview"]}`;
+
+          toggleBtn.addEventListener("click", () => {
+            const isOpen = overviewDiv.style.display === "block";
+            overviewDiv.style.display = isOpen ? "none" : "block";
+            toggleBtn.textContent = isOpen ? "Show Project Overview" : "Hide Project Overview";
+          });
+
+          card.appendChild(toggleBtn);
+          card.appendChild(overviewDiv);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const filters = Array.from(document.querySelectorAll(".filter-input")).map(input => input.value.toLowerCase());
+
+      const filtered = originalData.filter(row => {
+        return headers.every((header, i) => {
+          return (row[header] || "").toLowerCase().includes(filters[i]);
+        });
+      });
+
+      renderCards(filtered);
+    }
+
+    Papa.parse("oral_histories.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const data = results.data.filter(row => Object.values(row).some(cell => cell?.trim()));
+        originalData = data;
+        headers = Object.keys(data[0]).filter(h => h !== "Project Overview");
+        createFilters();
+        renderCards(data);
+      }
+    });
+  </script>
+</body>
+</html>
