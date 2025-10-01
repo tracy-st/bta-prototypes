@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Inner Hits Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background-color: #f7fafc;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+        
+        .search-meta {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        .search-result {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .result-thumbnail {
+            width: 80px;
+            height: 120px;
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            font-size: 0.75rem;
+        }
+        
+        .result-meta {
+            flex: 1;
+        }
+        
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-title:hover {
+            text-decoration: underline;
+        }
+        
+        .result-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+        
+        .result-details span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .label {
+            font-weight: 600;
+        }
+        
+        .inner-hits {
+            margin-top: 1rem;
+        }
+        
+        .inner-hits-header {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .match-count {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .page-hit {
+            background: #f7fafc;
+            border-left: 3px solid #4299e1;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-radius: 4px;
+        }
+        
+        .page-hit:last-child {
+            margin-bottom: 0;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-number {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.875rem;
+        }
+        
+        .view-page {
+            color: #2b6cb0;
+            font-size: 0.813rem;
+            text-decoration: none;
+        }
+        
+        .view-page:hover {
+            text-decoration: underline;
+        }
+        
+        .page-excerpt {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #2d3748;
+        }
+        
+        .highlight {
+            background-color: #fef5e7;
+            font-weight: 600;
+            padding: 0 0.2em;
+        }
+        
+        .ellipsis {
+            color: #a0aec0;
+        }
+        
+        .show-more {
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+        
+        .show-more-btn {
+            background: none;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .show-more-btn:hover {
+            background: #edf2f7;
+            border-color: #a0aec0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #bee3f8;
+            color: #2c5282;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .compact-view .page-hit {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            background: transparent;
+            border-left: none;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .compact-view .page-hit:last-child {
+            border-bottom: none;
+        }
+        
+        .compact-view .page-number {
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+        
+        .compact-view .page-excerpt {
+            flex: 1;
+        }
+        
+        .inline-view .page-hit {
+            display: inline;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .inline-view .page-header {
+            display: inline;
+        }
+        
+        .inline-view .page-number {
+            color: #2b6cb0;
+            font-weight: 600;
+        }
+        
+        .inline-view .page-number::after {
+            content: ": ";
+        }
+        
+        .inline-view .page-excerpt {
+            display: inline;
+        }
+        
+        .inline-view .inner-hits {
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Results</h1>
+        <p class="search-meta">Found 127 results for "covenant" (showing results 1-3)</p>
+        
+        <!-- Example 1: Detailed view with page previews -->
+        <div class="search-result">
+            <h1>Example 1: Detailed view with page previews</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">A Journal and Diary of Elder Samuel Thompson</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1831-1835</span>
+                        <span><span class="label">Repository:</span> Harvard Divinity School Library</span>
+                        <span><span class="label">Genre:</span> Diary</span>
+                        <span class="badge">Public Domain</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">5 matches</span>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number">Page 12</span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> and entered into a <span class="highlight">covenant</span> with the Lord to devote myself entirely to His service. The spirit was strong within me and I felt <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number">Page 34</span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> renewed my <span class="highlight">covenant</span> vows this morning. Brother Williams spoke eloquently of the old <span class="highlight">covenant</span> and new <span class="highlight">covenant</span> and their significance for our ministry <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number">Page 67</span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> the congregation gathered to witness the <span class="highlight">covenant</span> ceremony. Many tears were shed as families pledged their faith <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 2 more matches</button>
+                </div>
+            </div>
+        </div>
+
+              
+        <!-- Example 4: Grouped highlights view -->
+        <div class="search-result">
+            <h1>Example 4: Grouped highlights view</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Minutes of the Baptist Association Meeting</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1852</span>
+                        <span><span class="label">Repository:</span> Virginia Historical Society</span>
+                        <span><span class="label">Genre:</span> Minutes</span>
+                        <span class="badge">Restricted Access</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">2 matches</span>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number">Page 45</span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        Resolved, that this Association do hereby renew its <span class="highlight">covenant</span> with the Lord, pledging to support missions both domestic and foreign, and to maintain the doctrines of grace as handed down through the ages. Brother Thompson moved that the <span class="highlight">covenant</span> be read aloud at each quarterly meeting.
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number">Page 89</span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> discussed the importance of maintaining <span class="highlight">covenant</span> discipline within member churches. Several cases were brought forward <span class="ellipsis">...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Example 2: Compact list view -->
+        <div class="search-result">
+            <h1>Example 2: Compact list view</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📄 No Preview
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Church Records: First Baptist Church of Charleston</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1825-1845</span>
+                        <span><span class="label">Repository:</span> South Carolina Historical Society</span>
+                        <span><span class="label">Genre:</span> Church Records</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits compact-view">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">8 matches</span>
+                </div>
+                
+                <div class="page-hit">
+                    <span class="page-number">Page 3</span>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> members entered into <span class="highlight">covenant</span> together <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <span class="page-number">Page 15</span>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> renewed church <span class="highlight">covenant</span> on this day <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <span class="page-number">Page 22</span>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> violation of <span class="highlight">covenant</span> obligations reported <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 5 more matches</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Example 3: Inline view with many matches -->
+        <div class="search-result">
+            <h1>Example 3: Inline view with many matches</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Sermons and Theological Essays by Rev. John Mason</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1840</span>
+                        <span><span class="label">Repository:</span> Duke Divinity School Library</span>
+                        <span><span class="label">Genre:</span> Sermon</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits inline-view">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">23 matches</span>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number">Page 5</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> the nature of the <span class="highlight">covenant</span> relationship <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number">Page 12</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> God's <span class="highlight">covenant</span> with Abraham <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number">Page 18</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> under the new <span class="highlight">covenant</span> of grace <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show all 23 matches</button>
+                </div>
+            </div>
+        </div>
+  
+
+        <!-- Example 5: Grid layout for multiple matches -->
+        <div class="search-result">
+            <h1> Example 5: Grid layout for multiple matches</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📚 Collection
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Correspondence of Rev. Elias Smith</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1805-1820</span>
+                        <span><span class="label">Repository:</span> American Antiquarian Society</span>
+                        <span><span class="label">Genre:</span> Correspondence</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">12 matches</span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number">Page 7</span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> I write to renew our <span class="highlight">covenant</span> of friendship and mutual support in ministry <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number">Page 23</span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> the <span class="highlight">covenant</span> meeting was well attended, with many new converts <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number">Page 41</span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> breaking the <span class="highlight">covenant</span> would bring divine judgment upon us all <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number">Page 58</span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> our <span class="highlight">covenant</span> with God demands unwavering faith <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 8 more matches</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 6: Image snippets with bounding boxes -->
+        <div class="search-result">
+            <h1>Example 6: Image snippets with bounding boxes</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Handwritten Manuscript: Spiritual Reflections</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1798</span>
+                        <span><span class="label">Repository:</span> Library of Congress</span>
+                        <span><span class="label">Genre:</span> Manuscript</span>
+                        <span class="badge">OCR Available</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inner-hits">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">3 matches</span>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div class="image-snippet">
+                        <div class="snippet-label">Page 15</div>
+                        <div class="image-container">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5YTNhYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkhhbmR3cml0dGVuIFRleHQgU2FtcGxlPC90ZXh0Pjwvc3ZnPg==" alt="Page 15 snippet" style="width: 100%; height: auto; border: 1px solid #ddd;">
+                            <div class="bounding-box" style="position: absolute; top: 20%; left: 15%; width: 70%; height: 15%; border: 2px solid #ff6b6b; background: rgba(255, 107, 107, 0.2); pointer-events: none;"></div>
+                            <div class="bounding-box" style="position: absolute; top: 45%; left: 25%; width: 50%; height: 12%; border: 2px solid #4ecdc4; background: rgba(78, 205, 196, 0.2); pointer-events: none;"></div>
+                        </div>
+                        <div class="snippet-text">
+                            <span class="highlight">covenant</span> <span class="ellipsis">...</span> <span class="highlight">covenant</span>
+                        </div>
+                    </div>
+                    
+                    <div class="image-snippet">
+                        <div class="snippet-label">Page 32</div>
+                        <div class="image-container">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5YTNhYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkhhbmR3cml0dGVuIFRleHQgU2FtcGxlPC90ZXh0Pjwvc3ZnPg==" alt="Page 32 snippet" style="width: 100%; height: auto; border: 1px solid #ddd;">
+                            <div class="bounding-box" style="position: absolute; top: 30%; left: 20%; width: 60%; height: 20%; border: 2px solid #45b7d1; background: rgba(69, 183, 209, 0.2); pointer-events: none;"></div>
+                        </div>
+                        <div class="snippet-text">
+                            <span class="highlight">covenant</span> with God
+                        </div>
+                    </div>
+                    
+                    <div class="image-snippet">
+                        <div class="snippet-label">Page 48</div>
+                        <div class="image-container">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5YTNhYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkhhbmR3cml0dGVuIFRleHQgU2FtcGxlPC90ZXh0Pjwvc3ZnPg==" alt="Page 48 snippet" style="width: 100%; height: auto; border: 1px solid #ddd;">
+                            <div class="bounding-box" style="position: absolute; top: 25%; left: 10%; width: 80%; height: 18%; border: 2px solid #f9ca24; background: rgba(249, 202, 36, 0.2); pointer-events: none;"></div>
+                            <div class="bounding-box" style="position: absolute; top: 55%; left: 30%; width: 40%; height: 15%; border: 2px solid #6c5ce7; background: rgba(108, 92, 231, 0.2); pointer-events: none;"></div>
+                        </div>
+                        <div class="snippet-text">
+                            <span class="highlight">covenant</span> <span class="ellipsis">...</span> <span class="highlight">covenant</span> renewed
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">View all pages</button>
+                </div>
+            </div>
+        </div>
+
+    
+    <style>
+        .image-snippet {
+            flex: 1 1 300px;
+        }
+        
+        .snippet-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-container {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bounding-box {
+            position: absolute;
+            border-radius: 2px;
+        }
+        
+        .snippet-text {
+            font-size: 0.875rem;
+            color: #4a5568;
+            background: #f7fafc;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Accordion styles */
+        .accordion-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: #f7fafc;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .accordion-header:hover {
+            background: #edf2f7;
+        }
+
+        .accordion-content {
+            padding: 0.75rem;
+            background: white;
+            display: none;
+        }
+
+        .accordion-content.open {
+            display: block;
+        }
+
+        .accordion-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .accordion-toggle.open {
+            transform: rotate(90deg);
+        }
+
+        /* Carousel styles */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-slide {
+            min-width: 300px;
+            margin-right: 1rem;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .carousel-dot.active {
+            background: #4299e1;
+        }
+
+        /* Heatmap styles */
+        .heatmap-container {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .heatmap-page {
+            width: 20px;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .heatmap-page:hover {
+            transform: scale(1.2);
+        }
+
+        .heatmap-page.match {
+            background: linear-gradient(45deg, #4299e1, #63b3ed);
+        }
+
+        .heatmap-page.match.multiple {
+            background: linear-gradient(45deg, #3182ce, #4299e1);
+        }
+
+        .heatmap-page.match.many {
+            background: linear-gradient(45deg, #2c5282, #3182ce);
+        }
+
+        .heatmap-tooltip {
+            position: absolute;
+            background: #2d3748;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .heatmap-page:hover .heatmap-tooltip {
+            opacity: 1;
+        }
+
+        /* Card flip styles */
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card-flip {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-back {
+            background: white;
+            color: #2d3748;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content {
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        /* Progress bar styles */
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            transition: width 0.3s ease;
+        }
+
+        .progress-marks {
+            position: relative;
+            height: 20px;
+            margin-top: 0.5rem;
+        }
+
+        .progress-mark {
+            position: absolute;
+            width: 4px;
+            height: 16px;
+            background: #4299e1;
+            top: 0;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .progress-mark:hover {
+            background: #3182ce;
+        }
+
+        .progress-tooltip {
+            position: absolute;
+            background: #2d3748;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .progress-mark:hover .progress-tooltip {
+            opacity: 1;
+        }
+
+        /* Tabbed view styles */
+        .tab-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 0.75rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #4a5568;
+            transition: all 0.2s;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #2b6cb0;
+            border-bottom: 2px solid #4299e1;
+        }
+
+        .tab-content {
+            padding: 1rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Results - Innovative Inner Hits Displays</h1>
+        <p class="search-meta">Found 127 results for "covenant" (showing results 1-10)</p>
+
+        <!-- Example 8: Accordion View -->
+        <div class="search-result">
+            <h1> Example 8: Accordion View (Expandable)</h1>
+            <div class="result-header">
+                <div class="result-thumbnail">
+                    📂 Expandable
+                </div>
+                <div class="result-meta">
+                    <a href="#" class="result-title">Conference Proceedings: Baptist Theology</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> 1830-1840</span>
+                        <span><span class="label">Repository:</span> Southern Baptist Theological Seminary</span>
+                        <span><span class="label">Genre:</span> Proceedings</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inner-hits">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">4 matches</span>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Page 12 - Single Match</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> the doctrine of the <span class="highlight">covenant</span> as understood by our forefathers <span class="ellipsis">...</span>
+                        </div>
+                        <a href="#" class="view-page">View full page →</a>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Page 34 - Multiple Matches</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> entered into a <span class="highlight">covenant</span> with God and renewed our <span class="highlight">covenant</span> vows <span class="ellipsis">...</span>
+                        </div>
+                        <a href="#" class="view-page">View full page →</a>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Page 67 - Extended Context</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="page-excerpt">
+                            The <span class="highlight">covenant</span> relationship between God and His people has been a cornerstone of our faith since the beginning. This sacred <span class="highlight">covenant</span> promises eternal salvation to those who remain faithful.
+                        </div>
+                        <a href="#" class="view-page">View full page →</a>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Page 89 - Theological Discussion</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> debate continues regarding the nature of the <span class="highlight">covenant</span> in modern times <span class="ellipsis">...</span>
+                        </div>
+                        <a href="#" class="view-page">View full page →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div>
+        <h2>Removed:</h2>
+        <ul>
+            <li>Example 7: Timeline view for dated content</li>
+            <li>Example 9: Carousel View</li> 
+            <li>Example 10: Heatmap View </li>
+            <li>Example 11: Card Flip View</li>
+            <li>Example 12: Progress Bar View </li>
+            <li>Example 13: Tabbed View</li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.accordion-toggle');
+            content.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        function goToSlide(slideIndex, trackId) {
+            const track = document.getElementById(trackId);
+            const dots = track.parentElement.nextElementSibling.children;
+            const slideWidth = 320; // slide width + margin
+            track.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove('active');
+            }
+            dots[slideIndex].classList.add('active');
+        }
+
+        function showTooltip(element, text) {
+            // Tooltip is already in the element
+        }
+
+        function hideTooltip(element) {
+            // Tooltip is already in the element
+        }
+
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        function showProgressTooltip(element, text) {
+            // Tooltip is already in the element
+        }
+
+        function hideProgressTooltip(element) {
+            // Tooltip is already in the element
+        }
+
+        function switchTab(button, tabId) {
+            const container = button.closest('.tab-container');
+            const tabs = container.querySelectorAll('.tab-content');
+            const buttons = container.querySelectorAll('.tab-button');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
+        }
+    </script>
+</body>
+</html>
