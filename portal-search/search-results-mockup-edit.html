@@ -18,10 +18,22 @@
             background-color: #f7fafc;
             padding: 2rem;
         }
+
+           .sidebar {
+         height: 100%;
+  width: 250px;
+  position: fixed;
+  left: 25px;
+  top: 0;
+  padding-top: 40px;
+  background-color: darkgreen;
+  
+        }
+        
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin-left: 25%
         }
         
         h1 {
@@ -71,6 +83,11 @@
         .result-meta {
             flex: 1;
         }
+
+        .expand-accordion {
+            display: inline;
+            right: 0
+        }
         
         .result-title {
             font-size: 1.25rem;
@@ -86,6 +103,7 @@
         .result-details {
             display: flex;
             flex-wrap: wrap;
+            flex-direction: column;
             gap: 1rem;
             font-size: 0.875rem;
             color: #4a5568;
@@ -197,7 +215,7 @@
         }
         
         .badge {
-            display: inline-block;
+            display: none;
             padding: 0.25rem 0.5rem;
             background: #bee3f8;
             color: #2c5282;
@@ -254,295 +272,7 @@
         .inline-view .inner-hits {
             line-height: 1.8;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Search Results</h1>
-        <p class="search-meta">Found 127 results for "covenant" (showing results 1-3)</p>
-        
-        <!-- Example 1: Detailed view with page previews -->
-        <div class="search-result">
-            <h1>Example 1: Detailed view with page previews</h1>
-            <div class="result-header">
-                <div class="result-thumbnail">
-                    📖 Preview
-                </div>
-                <div class="result-meta">
-                    <a href="#" class="result-title">A Journal and Diary of Elder Samuel Thompson</a>
-                    <div class="result-details">
-                        <span><span class="label">Date:</span> 1831-1835</span>
-                        <span><span class="label">Repository:</span> Harvard Divinity School Library</span>
-                        <span><span class="label">Genre:</span> Diary</span>
-                        <span class="badge">Public Domain</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inner-hits">
-                <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">5 matches</span>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <span class="page-number"></span>
-                        <a href="#" class="view-page">View page →</a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> and entered into a <span class="highlight">covenant</span> with the Lord to devote myself entirely to His service. The spirit was strong within me and I felt <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <span class="page-number"></span>
-                        <a href="#" class="view-page">View page →</a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> renewed my <span class="highlight">covenant</span> vows this morning. Brother Williams spoke eloquently of the old <span class="highlight">covenant</span> and new <span class="highlight">covenant</span> and their significance for our ministry <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <span class="page-number"></span>
-                        <a href="#" class="view-page">View page →</a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> the congregation gathered to witness the <span class="highlight">covenant</span> ceremony. Many tears were shed as families pledged their faith <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="show-more">
-                    <button class="show-more-btn">Show 2 more matches</button>
-                </div>
-            </div>
-        </div>
-
-              
-        <!-- Example 4: Grouped highlights view -->
-        <div class="search-result">
-            <h1>Example 4: Grouped highlights view</h1>
-            <div class="result-header">
-                <div class="result-thumbnail">
-                    📖 Preview
-                </div>
-                <div class="result-meta">
-                    <a href="#" class="result-title">Minutes of the Baptist Association Meeting</a>
-                    <div class="result-details">
-                        <span><span class="label">Date:</span> 1852</span>
-                        <span><span class="label">Repository:</span> Virginia Historical Society</span>
-                        <span><span class="label">Genre:</span> Minutes</span>
-                        <span class="badge">Restricted Access</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inner-hits">
-                <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">2 matches</span>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <span class="page-number"></span>
-                        <a href="#" class="view-page">View page →</a>
-                    </div>
-                    <div class="page-excerpt">
-                        Resolved, that this Association do hereby renew its <span class="highlight">covenant</span> with the Lord, pledging to support missions both domestic and foreign, and to maintain the doctrines of grace as handed down through the ages. Brother Thompson moved that the <span class="highlight">covenant</span> be read aloud at each quarterly meeting.
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <span class="page-number"></span>
-                        <a href="#" class="view-page">View page →</a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> discussed the importance of maintaining <span class="highlight">covenant</span> discipline within member churches. Several cases were brought forward <span class="ellipsis">...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Example 2: Compact list view -->
-        <div class="search-result">
-            <h1>Example 2: Compact list view</h1>
-            <div class="result-header">
-                <div class="result-thumbnail">
-                    📄 No Preview
-                </div>
-                <div class="result-meta">
-                    <a href="#" class="result-title">Church Records: First Baptist Church of Charleston</a>
-                    <div class="result-details">
-                        <span><span class="label">Date:</span> 1825-1845</span>
-                        <span><span class="label">Repository:</span> South Carolina Historical Society</span>
-                        <span><span class="label">Genre:</span> Church Records</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inner-hits compact-view">
-                <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">8 matches</span>
-                </div>
-                
-                <div class="page-hit">
-                    <span class="page-number"></span>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> members entered into <span class="highlight">covenant</span> together <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <span class="page-number"></span>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> renewed church <span class="highlight">covenant</span> on this day <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <span class="page-number"></span>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> violation of <span class="highlight">covenant</span> obligations reported <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
-                    </div>
-                </div>
-                
-                <div class="show-more">
-                    <button class="show-more-btn">Show 5 more matches</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Example 3: Inline view with many matches -->
-        <div class="search-result">
-            <h1>Example 3: Inline view with many matches</h1>
-            <div class="result-header">
-                <div class="result-thumbnail">
-                    📖 Preview
-                </div>
-                <div class="result-meta">
-                    <a href="#" class="result-title">Sermons and Theological Essays by Rev. John Mason</a>
-                    <div class="result-details">
-                        <span><span class="label">Date:</span> 1840</span>
-                        <span><span class="label">Repository:</span> Duke Divinity School Library</span>
-                        <span><span class="label">Genre:</span> Sermon</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inner-hits inline-view">
-                <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">23 matches</span>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <a href="#" class="page-number"></a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> the nature of the <span class="highlight">covenant</span> relationship <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <a href="#" class="page-number"></a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> God's <span class="highlight">covenant</span> with Abraham <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="page-hit">
-                    <div class="page-header">
-                        <a href="#" class="page-number"></a>
-                    </div>
-                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> under the new <span class="highlight">covenant</span> of grace <span class="ellipsis">...</span>
-                    </div>
-                </div>
-                
-                <div class="show-more">
-                    <button class="show-more-btn">Show all 23 matches</button>
-                </div>
-            </div>
-        </div>
-  
-
-        <!-- Example 5: Grid layout for multiple matches -->
-        <div class="search-result">
-            <h1> Example 5: Grid layout for multiple matches</h1>
-            <div class="result-header">
-                <div class="result-thumbnail">
-                    📚 Collection
-                </div>
-                <div class="result-meta">
-                    <a href="#" class="result-title">Correspondence of Rev. Elias Smith</a>
-                    <div class="result-details">
-                        <span><span class="label">Date:</span> 1805-1820</span>
-                        <span><span class="label">Repository:</span> American Antiquarian Society</span>
-                        <span><span class="label">Genre:</span> Correspondence</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="inner-hits">
-                <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">12 matches</span>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                    <div class="page-hit">
-                        <div class="page-header">
-                            <span class="page-number"></span>
-                            <a href="#" class="view-page">View page →</a>
-                        </div>
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> I write to renew our <span class="highlight">covenant</span> of friendship and mutual support in ministry <span class="ellipsis">...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="page-hit">
-                        <div class="page-header">
-                            <span class="page-number"></span>
-                            <a href="#" class="view-page">View page →</a>
-                        </div>
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> the <span class="highlight">covenant</span> meeting was well attended, with many new converts <span class="ellipsis">...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="page-hit">
-                        <div class="page-header">
-                            <span class="page-number"></span>
-                            <a href="#" class="view-page">View page →</a>
-                        </div>
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> breaking the <span class="highlight">covenant</span> would bring divine judgment upon us all <span class="ellipsis">...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="page-hit">
-                        <div class="page-header">
-                            <span class="page-number"></span>
-                            <a href="#" class="view-page">View page →</a>
-                        </div>
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> our <span class="highlight">covenant</span> with God demands unwavering faith <span class="ellipsis">...</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="show-more">
-                    <button class="show-more-btn">Show 8 more matches</button>
-                </div>
-            </div>
-        </div>
-    
-    <style>
-        .image-snippet {
+  .image-snippet {
             flex: 1 1 300px;
         }
         
@@ -856,90 +586,269 @@
         .tab-content.active {
             display: block;
         }
+
     </style>
 </head>
 <body>
+    <div class="page">
+    <div class="sidebar">
+test
+    </div>
     <div class="container">
-
-        <!-- Example 8: Accordion View -->
+        <strong>Search Results – Full-Text Inner Hits Mockups</strong>
+        <p class="search-meta">Note that these mockups use made-up data. "Show more" buttons are also non-functional.</p>
+        
+        <!-- Example 1: Detailed view with page previews -->
         <div class="search-result">
-            <h1> Example 8: Accordion View (Expandable)</h1>
+            <strong>Example 1: Detailed view with page previews</strong>
             <div class="result-header">
-                <div class="result-thumbnail">
-                    📂 Expandable
-                </div>
                 <div class="result-meta">
-                    <a href="#" class="result-title">Conference Proceedings: Baptist Theology</a>
+                    <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
                     <div class="result-details">
-                        <span><span class="label">Date:</span> 1830-1840</span>
-                        <span><span class="label">Repository:</span> Southern Baptist Theological Seminary</span>
-                        <span><span class="label">Genre:</span> Proceedings</span>
+                        <span><span class="label">Date:</span> June 1925</span>
+                        <span><span class="label">Contributing Institution:</span> Digital Production Center in Wilson Library</span>
                     </div>
+                </div>
+                <div class="result-thumbnail">
+                    📖 Preview
                 </div>
             </div>
 
+              <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                               <span>Full Text: <span class="match-count">5 matches</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+                        
+            
+            <div class="inner-hits">
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number"></span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> and entered into a <span class="highlight">covenant</span> with the Lord to devote myself entirely to His service. The spirit was strong within me and I felt <span class="ellipsis">...</span>
+                    </div>
+                 
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number"></span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> renewed my <span class="highlight">covenant</span> vows this morning. Brother Williams spoke eloquently of the old <span class="highlight">covenant</span> and new <span class="highlight">covenant</span> and their significance for our ministry <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <span class="page-number"></span>
+                        <a href="#" class="view-page">View page →</a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> the congregation gathered to witness the <span class="highlight">covenant</span> ceremony. Many tears were shed as families pledged their faith <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 2 more matches</button>
+                </div>
+                                <div class="show-more">
+                    <button class="show-more-btn">See all 5 matches</button>
+                </div>
+            </div>
+             </div>
+               </div>
+        </div>
+
+              
+        
+        <!-- Example 2: Compact list view -->
+        <div class="search-result">
+            <strong>Example 2: Compact list view</strong>
+            <div class="result-header">
+                <div class="result-meta">
+                    <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> June 1925</span>
+                        <span><span class="label">Contributing Institution:</span> Digital Production Center in Wilson Library</span>
+                                 </div>
+                </div>
+                <div class="result-thumbnail">
+                    📄 No Preview
+                </div>
+            </div>
+
+
+              <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Full Text: <span class="match-count">8 matches</span>
+                        <span class="accordion-toggle">▶</span>
+                    </div>
+                    <div class="accordion-content">
+            
+            <div class="inner-hits compact-view">
+                <div class="inner-hits-header">
+              </div>
+                
+                <div class="page-hit">
+                                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> members entered into <span class="highlight">covenant</span> together <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> renewed church <span class="highlight">covenant</span> on this day <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+    
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> violation of <span class="highlight">covenant</span> obligations reported <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 5 more matches</button>
+                </div>
+            </div>
+            </div>
+        </div>
+                </div>
+        
+        <!-- Example 3: Inline view with many matches -->
+        <div class="search-result">
+            <strong>Example 3: Inline view with many matches</strong>
+            <div class="result-header">
+               <div class="result-meta">
+                    <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> June 1925</span>
+                        <span><span class="label">Contributing Institution:</span> Digital Production Center in Wilson Library</span>
+                    </div>
+                </div>
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+            </div>
+            
+            <div class="inner-hits inline-view">
+                <div class="inner-hits-header">
+                    Matching Pages <span class="match-count">23 matches</span>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number"></a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> the nature of the <span class="highlight">covenant</span> relationship <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number"></a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> God's <span class="highlight">covenant</span> with Abraham <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="page-hit">
+                    <div class="page-header">
+                        <a href="#" class="page-number"></a>
+                    </div>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> under the new <span class="highlight">covenant</span> of grace <span class="ellipsis">...</span>
+                    </div>
+                </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show all 23 matches</button>
+                </div>
+            </div>
+        </div>
+  
+
+        <!-- Example 5: Grid layout for multiple matches -->
+        <div class="search-result">
+            <strong> Example 5: Grid layout for multiple matches</strong>
+            <div class="result-header">
+               <div class="result-meta">
+                    <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
+                    <div class="result-details">
+                        <span><span class="label">Date:</span> June 1925</span>
+                        <span><span class="label">Contributing Institution:</span> Digital Production Center in Wilson Library</span>
+                    </div>
+                </div>
+                <div class="result-thumbnail">
+                    📖 Preview
+                </div>
+            </div>
+            
             <div class="inner-hits">
                 <div class="inner-hits-header">
-                    Matching Pages <span class="match-count">4 matches</span>
+                    Matching Pages <span class="match-count">12 matches</span>
                 </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Page 12 - Single Match</span>
-                        <span class="accordion-toggle">▶</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> the doctrine of the <span class="highlight">covenant</span> as understood by our forefathers <span class="ellipsis">...</span>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number"></span>
+                            <a href="#" class="view-page">View page →</a>
                         </div>
-                        <a href="#" class="view-page">View full page →</a>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> I write to renew our <span class="highlight">covenant</span> of friendship and mutual support in ministry <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number"></span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> the <span class="highlight">covenant</span> meeting was well attended, with many new converts <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number"></span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> breaking the <span class="highlight">covenant</span> would bring divine judgment upon us all <span class="ellipsis">...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="page-hit">
+                        <div class="page-header">
+                            <span class="page-number"></span>
+                            <a href="#" class="view-page">View page →</a>
+                        </div>
+                        <div class="page-excerpt">
+                            <span class="ellipsis">...</span> our <span class="highlight">covenant</span> with God demands unwavering faith <span class="ellipsis">...</span>
+                        </div>
                     </div>
                 </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Page 34 - Multiple Matches</span>
-                        <span class="accordion-toggle">▶</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> entered into a <span class="highlight">covenant</span> with God and renewed our <span class="highlight">covenant</span> vows <span class="ellipsis">...</span>
-                        </div>
-                        <a href="#" class="view-page">View full page →</a>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Page 67 - Extended Context</span>
-                        <span class="accordion-toggle">▶</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="page-excerpt">
-                            The <span class="highlight">covenant</span> relationship between God and His people has been a cornerstone of our faith since the beginning. This sacred <span class="highlight">covenant</span> promises eternal salvation to those who remain faithful.
-                        </div>
-                        <a href="#" class="view-page">View full page →</a>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Page 89 - Theological Discussion</span>
-                        <span class="accordion-toggle">▶</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="page-excerpt">
-                            <span class="ellipsis">...</span> debate continues regarding the nature of the <span class="highlight">covenant</span> in modern times <span class="ellipsis">...</span>
-                        </div>
-                        <a href="#" class="view-page">View full page →</a>
-                    </div>
+                
+                <div class="show-more">
+                    <button class="show-more-btn">Show 8 more matches</button>
                 </div>
             </div>
         </div>
 
 
-
-    </div>
+</div>
 
     <script>
         function toggleAccordion(header) {
