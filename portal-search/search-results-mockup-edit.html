@@ -15,25 +15,26 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #1a202c;
-            background-color: #f7fafc;
+            background-color: #eaeae5;
             padding: 2rem;
         }
 
            .sidebar {
-         height: 100%;
-  width: 250px;
-  position: fixed;
-  left: 25px;
-  top: 0;
-  padding-top: 40px;
-  background-color: darkgreen;
+                height: 100%;
+                width: 250px;
+                position: absolute;
+                left: 25px;
+                top: 125px;
+                padding-top: 40px;
+                background-color: #264b3d;
+                z-index: -3
   
         }
         
-        
+    
         .container {
             max-width: 800px;
-            margin-left: 25%
+            margin-left: 20%
         }
         
         h1 {
@@ -43,15 +44,13 @@
         }
         
         .search-meta {
-            color: #718096;
+            color: #000;
             margin-bottom: 2rem;
             font-size: 0.95rem;
         }
         
         .search-result {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background: #d7c9a7;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -63,7 +62,6 @@
             gap: 1rem;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #e2e8f0;
         }
         
         .result-thumbnail {
@@ -92,7 +90,7 @@
         .result-title {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #2b6cb0;
+            color: #264b3d;
             margin-bottom: 0.5rem;
         }
         
@@ -106,7 +104,7 @@
             flex-direction: column;
             gap: 1rem;
             font-size: 0.875rem;
-            color: #4a5568;
+            color: #000;
         }
         
         .result-details span {
@@ -144,10 +142,10 @@
         
         .page-hit {
             background: #f7fafc;
-            border-left: 3px solid #4299e1;
+            border-left: 3px solid  #2d3748;
             padding: 0.75rem;
             margin-bottom: 0.75rem;
-            border-radius: 4px;
+            max-height:90px;
         }
         
         .page-hit:last-child {
@@ -190,7 +188,7 @@
         }
         
         .ellipsis {
-            color: #a0aec0;
+            color: #000;
         }
         
         .show-more {
@@ -199,7 +197,7 @@
         }
         
         .show-more-btn {
-            background: none;
+            background: #fff;
             border: 1px solid #cbd5e0;
             color: #4a5568;
             padding: 0.5rem 1rem;
@@ -304,13 +302,12 @@
         /* Accordion styles */
         .accordion-item {
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
+             margin-bottom: 0.5rem;
             overflow: hidden;
         }
 
         .accordion-header {
-            background: #f7fafc;
+            background: #e9eae3;
             padding: 0.75rem;
             cursor: pointer;
             display: flex;
@@ -326,8 +323,12 @@
 
         .accordion-content {
             padding: 0.75rem;
-            background: white;
+            background: #d7c9a7;
             display: none;
+        }
+
+        .accordion-light {
+            background: #e9eae3
         }
 
         .accordion-content.open {
@@ -590,12 +591,13 @@
 </head>
 <body>
     <div class="page">
+                <h2>Search Results – Full-Text Inner Hits Mockups</h2>
+        <p class="search-meta">Note that these mockups use made-up data. Accordions are functional, but "Show more"/"See all" buttons are non-functional.</p>
     <div class="sidebar">
 test
     </div>
     <div class="container">
-        <strong>Search Results – Full-Text Inner Hits Mockups</strong>
-        <p class="search-meta">Note that these mockups use made-up data. "Show more" buttons are also non-functional.</p>
+
         
         <!-- Example 1: Detailed view with page previews -->
         <div class="search-result">
@@ -609,7 +611,7 @@ test
                     </div>
                 </div>
                 <div class="result-thumbnail">
-                    📖 Preview
+                    <img src="https://ids.lib.harvard.edu/ids/iiif/492538508/full/,150/0/default.jpg">
                 </div>
             </div>
 
@@ -629,7 +631,7 @@ test
                         <a href="#" class="view-page">View page →</a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> and entered into a <span class="highlight">covenant</span> with the Lord to devote myself entirely to His service. The spirit was strong within me and I felt <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span> J. W. Hawes, Jr., Chairman <span class="highlight">COMMITTEE</span> ON GEA AND GTEA Mir. 16, A. Pitts: Chaimman CONSTITUTION <span class="highlight">COMMITTEE</span> <span class="ellipsis">...</span>
                     </div>
                  
                 </div>
@@ -640,7 +642,7 @@ test
                         <a href="#" class="view-page">View page →</a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> renewed my <span class="highlight">covenant</span> vows this morning. Brother Williams spoke eloquently of the old <span class="highlight">covenant</span> and new <span class="highlight">covenant</span> and their significance for our ministry <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span> TEACHER OF THE YEAR <span class="highlight">COMMITTEE</span> M. D. Roberts, Chairman; <span class="ellipsis">...</span>
                     </div>
                 </div>
                 
@@ -650,7 +652,7 @@ test
                         <a href="#" class="view-page">View page →</a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> the congregation gathered to witness the <span class="highlight">covenant</span> ceremony. Many tears were shed as families pledged their faith <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span> Each candidate, before being admitted to membership, is required to satisfy an examining <span class="highlight">committee</span> of the members  <span class="ellipsis">...</span>
                     </div>
                 </div>
                 
@@ -679,7 +681,7 @@ test
                                  </div>
                 </div>
                 <div class="result-thumbnail">
-                    📄 No Preview
+                            <img src="https://ids.lib.harvard.edu/ids/iiif/492538508/full/,150/0/default.jpg">
                 </div>
             </div>
 
@@ -689,28 +691,25 @@ test
                         <span>Full Text: <span class="match-count">8 matches</span>
                         <span class="accordion-toggle">▶</span>
                     </div>
-                    <div class="accordion-content">
+                    <div class="accordion-content accordion-light">
             
             <div class="inner-hits compact-view">
-                <div class="inner-hits-header">
-              </div>
-                
                 <div class="page-hit">
-                                    <div class="page-excerpt">
-                        <span class="ellipsis">...</span> members entered into <span class="highlight">covenant</span> together <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                    <div class="page-excerpt">
+                        <span class="ellipsis">...</span> He has held memberships on important National <span class="highlight">Committees</span> and served as a  <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
                     </div>
                 </div>
                 
                 <div class="page-hit">
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> renewed church <span class="highlight">covenant</span> on this day <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                        <span class="ellipsis">...</span>  J. W. Hawes, Jr., Chairman <span class="highlight">COMMITTEE</span> ON GEA AND GTEA Mir. 16, A. Pitts: Chaimman CONSTITUTION <span class="highlight">COMMITTEE</span><span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
                     </div>
                 </div>
                 
                 <div class="page-hit">
     
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> violation of <span class="highlight">covenant</span> obligations reported <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
+                        <span class="ellipsis">...</span> Each candidate, before being admitted to membership, is required to satisfy an examining <span class="highlight">committee</span> of the members  <span class="ellipsis">...</span> <a href="#" class="view-page">View →</a>
                     </div>
                 </div>
                 
@@ -724,7 +723,7 @@ test
         
         <!-- Example 3: Inline view with many matches -->
         <div class="search-result">
-            <strong>Example 3: Inline view with many matches</strong>
+            <strong>Example 3: Concatenated Inline view (similar to CURIOSty)</strong>
             <div class="result-header">
                <div class="result-meta">
                     <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
@@ -734,7 +733,7 @@ test
                     </div>
                 </div>
                 <div class="result-thumbnail">
-                    📖 Preview
+                           <img src="https://ids.lib.harvard.edu/ids/iiif/492538508/full/,150/0/default.jpg">
                 </div>
             </div>
             
@@ -748,7 +747,7 @@ test
                         <a href="#" class="page-number"></a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> the nature of the <span class="highlight">covenant</span> relationship <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span> important National <span class="highlight">Committees</span> and served as a <span class="ellipsis">...</span>
                     </div>
                 </div>
                 
@@ -757,7 +756,7 @@ test
                         <a href="#" class="page-number"></a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> God's <span class="highlight">covenant</span> with Abraham <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span>  required to satisfy an examining <span class="highlight">committee</span> of the members <span class="ellipsis">...</span>
                     </div>
                 </div>
                 
@@ -766,7 +765,7 @@ test
                         <a href="#" class="page-number"></a>
                     </div>
                     <div class="page-excerpt">
-                        <span class="ellipsis">...</span> under the new <span class="highlight">covenant</span> of grace <span class="ellipsis">...</span>
+                        <span class="ellipsis">...</span> J. W. Hawes, Jr., Chairman <span class="highlight">COMMITTEE</span><span class="ellipsis">...</span>
                     </div>
                 </div>
                 
@@ -779,7 +778,7 @@ test
 
         <!-- Example 5: Grid layout for multiple matches -->
         <div class="search-result">
-            <strong> Example 5: Grid layout for multiple matches</strong>
+            <strong> Example 4: Grid layout for multiple matches</strong>
             <div class="result-header">
                <div class="result-meta">
                     <a href="#" class="result-title">Vol. 5, No. 4 ; The National Association of Colored Teachers Bulletin</a>
@@ -789,7 +788,7 @@ test
                     </div>
                 </div>
                 <div class="result-thumbnail">
-                    📖 Preview
+                        <img src="https://ids.lib.harvard.edu/ids/iiif/492538508/full/,150/0/default.jpg">
                 </div>
             </div>
             
@@ -805,7 +804,7 @@ test
                             <a href="#" class="view-page">View page →</a>
                         </div>
                         <div class="page-excerpt">
-                            <span class="ellipsis">...</span> I write to renew our <span class="highlight">covenant</span> of friendship and mutual support in ministry <span class="ellipsis">...</span>
+                            <span class="ellipsis">...</span> J. W. Hawes, Jr., Chairman <span class="highlight">COMMITTEE</span> <span class="ellipsis">...</span>
                         </div>
                     </div>
                     
@@ -815,7 +814,7 @@ test
                             <a href="#" class="view-page">View page →</a>
                         </div>
                         <div class="page-excerpt">
-                            <span class="ellipsis">...</span> the <span class="highlight">covenant</span> meeting was well attended, with many new converts <span class="ellipsis">...</span>
+                            <span class="ellipsis">...</span> required to satisfy an examining <span class="highlight">committee</span> of the members <span class="ellipsis">...</span>
                         </div>
                     </div>
                     
@@ -825,7 +824,7 @@ test
                             <a href="#" class="view-page">View page →</a>
                         </div>
                         <div class="page-excerpt">
-                            <span class="ellipsis">...</span> breaking the <span class="highlight">covenant</span> would bring divine judgment upon us all <span class="ellipsis">...</span>
+                            <span class="ellipsis">...</span> He has held memberships on important National <span class="highlight">Committees</span> and  <span class="ellipsis">...</span>
                         </div>
                     </div>
                     
@@ -835,7 +834,7 @@ test
                             <a href="#" class="view-page">View page →</a>
                         </div>
                         <div class="page-excerpt">
-                            <span class="ellipsis">...</span> our <span class="highlight">covenant</span> with God demands unwavering faith <span class="ellipsis">...</span>
+                            <span class="ellipsis">...</span> 16, A. Pitts: Chaimman CONSTITUTION <span class="highlight">COMMITTEE</span> <span class="ellipsis">...</span>
                         </div>
                     </div>
                 </div>
