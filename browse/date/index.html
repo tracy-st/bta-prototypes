@@ -21,7 +21,7 @@
     <section class="card pad" id="histogram"></section>
 
     <!-- Rows: each is a relatedItem_1_titleInfo_title -->
-    <section class="card" id="list">
+    <section id="list">
       <div class="header">
         <div class="header-inner">
           <div class="header-title" id="headerTitle">Publication Title</div>
@@ -262,7 +262,7 @@ function updateHeaderTitle(){
     sel.onchange=(e)=>{
       stateFilter=e.target.value;
       const fr=filteredAllRows();
-      document.getElementById('meta').textContent=`${fr.length} of ${allRows.length} items • ${minYear}–${maxYear}`;
+      document.getElementById('meta').textContent=`${fr.length} of ${allRows.length} items`;
       renderRows();
     };
 
@@ -270,13 +270,13 @@ function updateHeaderTitle(){
   stateFilter = e.target.value;
   const fr = filteredAllRows();
   document.getElementById('meta').textContent =
-    `${fr.length} of ${allRows.length} items • ${minYear}–${maxYear}`;
+    `${fr.length} of ${allRows.length} items`;
   updateHeaderTitle();     // <-- ADD THIS
   renderRows();
 };
 
     document.getElementById('meta').textContent=
-      `${filteredAllRows().length} of ${allRows.length} items • ${minYear}–${maxYear}`;
+      `${filteredAllRows().length} of ${allRows.length} items`
 
     renderHistogram();
     renderRows();
