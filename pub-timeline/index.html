@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Publication Timeline (Vanilla JS)</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html,body{margin:0;padding:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji}
+  </style>
+</head>
+<body class="min-h-screen bg-white text-slate-900">
+  <main class="p-6 mx-auto max-w-6xl">
+    <h1 class="text-2xl font-semibold tracking-tight mb-4">Publication Timeline</h1>
+
+    <div class="mb-4 text-sm text-slate-600" id="meta"></div>
+
+    <section class="border rounded-2xl p-3 shadow-sm" id="histogram"></section>
+
+    <section class="mt-6 border rounded-2xl overflow-hidden shadow-sm" id="list">
+      <div class="relative bg-slate-50 border-b">
+        <div class="grid grid-cols-[1fr_680px] items-end gap-4 px-4">
+          <div class="py-3 text-sm font-medium text-slate-600">titleInfo_title</div>
+          <div class="relative h-8" id="list-ruler"></div>
+        </div>
+      </div>
+      <div class="h-[540px] overflow-y-auto" id="groups"></div>
+    </section>
+  </main>
+
+  <aside id="detail" class="fixed top-0 right-0 h-full w-full sm:w-[420px] translate-x-full transition-transform duration-300 bg-white shadow-2xl border-l z-40">
+    <div class="flex items-center justify-between border-b px-4 py-3">
+      <div class="font-semibold">Details</div>
+      <button id="detailClose" class="rounded-xl px-3 py-1 bg-slate-100 hover:bg-slate-200">Close</button>
+    </div>
+    <div id="detailBody" class="p-4 text-sm space-y-2"></div>
+  </aside>
+
+  <script>
+  const CSV_URL = "publication_ids.csv";
+
+  const emerald = {
+    bar: "bg-emerald-700",
+    barSoft: "bg-emerald-600/70",
+    text: "text-emerald-800",
+    border: "border-emerald-700",
+  };
+
+  function toYear(v){
+    if(v==null) return null; const s=String(v); const m=s.match(/(17|18|19|20)[0-9]{2}/); return m?Number(m[0]):null;
+  }
+
+  function parseCSV(text){
+    const rows=[]; let i=0; const n=text.length; let cur=[]; let field=""; let inQ=false; function push(){cur.push(field); field="";}
+    function endRow(){rows.push(cur); cur=[];}
+    while(i<n){const ch=text[i++];
+      if(inQ){
+        if(ch==='"'){
+          if(text[i]==='"'){ field+='"'; i++; } else { inQ=false; }
+        } else { field+=ch; }
+      } else {
+        if(ch==='"'){ inQ=true; }
+        else if(ch===','){ push(); }
+        else if(ch===''){ push(); endRow(); }
+        else if(ch===''){ }
+        else { field+=ch; }
+      }
+    }
+    push(); if(cur.length) endRow();
+    if(rows.length===0) return [];
+    const header = rows.shift();
+    return rows.map(r=>Object.fromEntries(header.map((h,idx)=>[h, r[idx]??""])));
+  }
+
+  function scaleX(year, min, max, width){ if(!Number.isFinite(year) || min===max) return 0; const t=(Math.min(Math.max(year,min),max)-min)/(max-min); return t*width; }
+  function decadeTicks(min,max){ const start=Math.floor(min/10)*10; const end=Math.ceil(max/10)*10; const t=[]; for(let y=start;y<=end;y+=10) t.push(y); return t; }
+  function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+  function kv(label, value){ return `<div><div class="text-slate-500">${label}</div><div class="font-medium break-words">${value || '—'}</div></div>`; }
+
+  let allRows=[]; let years=[], minYear=1800, maxYear=2000, yearCounts=new Map();
+
+  function renderRuler(container, ticks, min, max, width){
+    container.innerHTML = '';
+    const base = el(`<div class="absolute inset-0"></div>`);
+    base.appendChild(el(`<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-slate-200"></div>`));
+    ticks.forEach(t=>{
+      const x=scaleX(t,min,max,width);
+      const tick=el(`<div class="absolute bottom-0 text-[10px] text-slate-500" style="left:${x-8}px"><div class="h-6 w-px bg-slate-300 mx-auto"></div><div class="mt-1">${t}</div></div>`);
+      base.appendChild(tick);
+    });
+    container.appendChild(base);
+  }
+
+  function renderHistogram(){
+    const W=1100, H=140, barW=3; const wrap=document.getElementById('histogram');
+    wrap.innerHTML='';
+    const scroller=el(`<div class="w-full overflow-x-auto"><div class="relative" style="width:${W}px;height:${H}px"></div></div>`);
+    const inner=scroller.querySelector('div.relative');
+    const ticks=decadeTicks(minYear,maxYear);
+    const maxCount = Math.max(1, ...Array.from(yearCounts.values()));
+    Array.from(yearCounts.entries()).forEach(([y,c])=>{
+      const x=scaleX(Number(y),minYear,maxYear,W);
+      const h=(c/maxCount)*(H-30);
+      inner.appendChild(el(`<div class="absolute bottom-8 ${emerald.barSoft}" style="left:${x}px;width:${barW}px;height:${Math.max(2,h)}px;border-top-left-radius:2px;border-top-right-radius:2px" title="${y}: ${c}"></div>`));
+    });
+    inner.appendChild(el(`<div class="absolute bottom-8 left-0 right-0 h-px bg-slate-300"></div>`));
+    ticks.forEach(t=>{
+      const x=scaleX(t,minYear,maxYear,W);
+      inner.appendChild(el(`<div class="absolute bottom-0 text-[10px] text-slate-500" style="left:${x-8}px"><div class="h-6 w-px bg-slate-300 mx-auto"></div><div class="mt-1">${t}</div></div>`));
+    });
+    wrap.appendChild(scroller);
+    renderRuler(document.getElementById('list-ruler'), ticks, minYear, maxYear, 680);
+  }
+
+  function renderGroups(){
+    const container=document.getElementById('groups');
+    container.innerHTML='';
+    const groups = new Map();
+    for(const r of allRows){ const key=(r.state||'Unknown').trim()||'Unknown'; if(!groups.has(key)) groups.set(key,[]); groups.get(key).push(r); }
+
+    const states=[...groups.keys()].sort((a,b)=>a.localeCompare(b));
+    for(const s of states){
+      const section=el(`<div class="border-b"><div class="sticky top-0 z-10 bg-slate-100 px-4 py-2 text-sm font-semibold ${emerald.text} tracking-wide flex items-center gap-2"><span class="inline-block h-2 w-2 rounded-full ${emerald.bar}"></span>${s}</div></div>`);
+      const list=el(`<div class="divide-y"></div>`);
+      const rows = groups.get(s).slice().sort((a,b)=> (a.year??0)-(b.year??0));
+      for(const r of rows){
+        const label = r.title || 'Untitled';
+        const sub = [r.collection, r.state, r.volume && `Vol. ${r.volume}`, r.number && `No. ${r.number}`].filter(Boolean).join(' · ');
+        const rowEl = el(`<div class="grid grid-cols-[1fr_680px] items-center gap-4 px-4 py-3 hover:bg-slate-50 cursor-pointer"></div>`);
+        const left = el(`<div class="truncate"><div class="font-medium leading-snug" title="${escapeHtml(label)}">${escapeHtml(label)}</div><div class="text-xs text-slate-500 truncate" title="${escapeHtml(sub)}">${escapeHtml(sub)}</div></div>`);
+        const right = el(`<div class="relative h-10"></div>`);
+        const W=680; const x = Number.isFinite(r.year)? scaleX(r.year,minYear,maxYear,W): null;
+        const ruler = el(`<div class="absolute inset-0"></div>`);
+        ruler.appendChild(el(`<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-slate-200"></div>`));
+        const ticks = decadeTicks(minYear,maxYear);
+        ticks.forEach(t=>{
+          const tx=scaleX(t,minYear,maxYear,W);
+          ruler.appendChild(el(`<div class="absolute bottom-0 text-[10px] text-slate-500" style="left:${tx-8}px"><div class="h-6 w-px bg-slate-300 mx-auto"></div><div class="mt-1">${t}</div></div>`));
+        });
+        if(x!==null){
+          ruler.appendChild(el(`<div class="absolute top-0 bottom-0 w-1 ${emerald.bar} rounded-full" style="left:${Math.max(0,Math.min(W-2,x))}px" title="${r.year}"></div>`));
+        } else {
+          ruler.appendChild(el(`<div class="absolute inset-0 grid place-items-center text-xs text-slate-400">—</div>`));
+        }
+        right.appendChild(ruler);
+        rowEl.appendChild(left); rowEl.appendChild(right);
+        rowEl.addEventListener('click',()=> openDetail(r));
+        list.appendChild(rowEl);
+      }
+      section.appendChild(list);
+      container.appendChild(section);
+    }
+  }
+
+  function openDetail(r){
+    const p=document.getElementById('detail');
+    const body=document.getElementById('detailBody');
+    body.innerHTML = `${kv('Title', escapeHtml(r.title))}${kv('Collection', escapeHtml(r.collection))}${kv('Identifier', escapeHtml(r.ident))}${kv('State', escapeHtml(r.state))}${kv('Year', r.year??'—')}${kv('Volume', escapeHtml(r.volume))}${kv('Number', escapeHtml(r.number))}${kv('Raw year', escapeHtml(r.rawYear))}`;
+    p.style.transform='translateX(0)';
+  }
+  function closeDetail(){ document.getElementById('detail').style.transform='translateX(100%)'; }
+  document.getElementById('detailClose').addEventListener('click', closeDetail);
+
+  fetch(CSV_URL).then(r=>r.text()).then(text=>{
+    const parsed = parseCSV(text);
+    allRows = parsed.map((d,i)=>({
+      id: d["publication_ID"] || String(i),
+      title: d["titleInfo_title"] || "",
+      collection: d["relatedItem_1_titleInfo_title"] || "",
+      ident: d["identifier_#text"] || "",
+      state: d["state"] || "",
+      year: toYear(d["year"]) ?? null,
+      volume: d["volume"] || "",
+      number: d["number"] || "",
+      rawYear: d["year"] || "",
+    })).filter(r=> r.title || r.collection || r.ident);
+
+    years = allRows.map(r=>r.year).filter(y=>Number.isFinite(y));
+    minYear = years.length? Math.min(...years): 1800;
+    maxYear = years.length? Math.max(...years): 2000;
+    yearCounts = new Map(); years.forEach(y=> yearCounts.set(y, (yearCounts.get(y)||0)+1));
+
+    document.getElementById('meta').textContent = `${allRows.length} items • ${minYear}–${maxYear}`;
+
+    renderHistogram();
+    renderGroups();
+  }).catch(err=>{ document.getElementById('meta').textContent = `Error loading CSV: ${err}`; });
+
+  function escapeHtml(s){ if(s==null) return ''; let out=String(s); out=out.split('&').join('&amp;'); out=out.split('<').join('&lt;'); out=out.split('>').join('&gt;'); out=out.split('"').join('&quot;'); out=out.split("'").join('&#39;'); return out; }
+  </script>
+</body>
+</html>

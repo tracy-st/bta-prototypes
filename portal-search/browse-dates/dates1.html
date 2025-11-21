@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Publication Month/Season Search</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fafcff; padding: 2em; }
+    .search { margin-bottom: 1em; }
+    .results { margin-top: 2em; }
+    .pub { background: #fff; border: 1px solid #ddd; margin: 0.5em 0; padding: 1em; border-radius: 6px; }
+    label { font-weight: bold; }
+    input[type="text"] { width: 340px; padding: .5em; }
+    input[type="file"] { margin-baottom: 1em;}
+    .disabled { background: #eee; color: #999; }
+  </style>
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+  <div class="file">
+    <label for="csvinput">Upload your CSV file:</label>
+    <input type="file" id="csvinput" accept=".csv">
+  </div>
+  <div class="search">
+    <label for="search">Search by month/season (multiple, e.g. "march, summer"):</label>
+    <input type="text" id="search" placeholder="Type month(s) or season(s)" class="disabled" disabled>
+  </div>
+  <div class="results" id="results"></div>
+
+<script>
+// Month/season lookup as before
+const monthLookup = {
+  january: 1, jan: 1,
+  february: 2, feb: 2,
+  march: 3, mar: 3,
+  april: 4, apr: 4,
+  may: 5,
+  june: 6, jun: 6,
+  july: 7, jul: 7,
+  august: 8, aug: 8,
+  september: 9, sep: 9, sept: 9,
+  october: 10, oct: 10,
+  november: 11, nov: 11,
+  december: 12, dec: 12
+};
+const seasonLookup = {
+  spring: [3, 4, 5],
+  summer: [6, 7, 8],
+  fall: [9, 10, 11],
+  autumn: [9, 10, 11],
+  winter: [12, 1, 2]
+};
+
+let publications = [];
+
+function parseInput(input) {
+  let tokens = input.toLowerCase().replace(/\s+/g, '').split(',');
+  let months = [];
+  tokens.forEach(token => {
+    if (monthLookup[token]) {
+      months.push(monthLookup[token]);
+    } else if (seasonLookup[token]) {
+      months.push(...seasonLookup[token]);
+    }
+  });
+  // Remove duplicates
+  return [...new Set(months)];
+}
+
+function extractMonthFromDate(dateStr) {
+  if (!dateStr) return null;
+  dateStr = dateStr.trim();
+  let m;
+  // Try Month name
+  if (m = dateStr.match(/([a-z]{3,9})/i)) {
+    let mNum = monthLookup[m[1].toLowerCase()];
+    if (mNum) return mNum;
+  }
+  // Try numeric month (YYYY-MM or MM/DD/YYYY)
+  if (m = dateStr.match(/(?:^|\D)(\d{1,2})(?:[\/\-])/)) {
+    let mNum = parseInt(m[1]);
+    if (mNum >=1 && mNum <= 12) return mNum;
+  }
+  return null;
+}
+
+function matchPublication(pub, searchMonths) {
+  if (!pub.date) return false;
+  let mNum = extractMonthFromDate(pub.date);
+  if (!mNum) return false;
+  return searchMonths.includes(mNum);
+}
+
+function renderResults(results) {
+  const container = document.getElementById("results");
+  if (results.length === 0) {
+    container.innerHTML = "<p>No matches found.</p>";
+    return;
+  }
+  container.innerHTML = results.map(pub => `
+    <div class="pub">
+      <strong>${pub.title}</strong><br>
+      <span>${pub.date ? pub.date : "(No date provided)"}</span><br>
+      <a href="${pub.url}" target="_blank">View Online</a>
+    </div>
+  `).join('');
+}
+
+document.getElementById("search").addEventListener("input", function() {
+  const val = this.value;
+  if (!val.trim()) {
+    renderResults([]);
+    return;
+  }
+  const months = parseInput(val);
+  if (months.length === 0) {
+    renderResults([]);
+    return;
+  }
+  const found = publications.filter(pub => matchPublication(pub, months));
+  renderResults(found);
+});
+
+// Handle CSV upload
+document.getElementById("csvinput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      // Find relevant fields/columns in the CSV header
+      // You want:
+      //   - title (e.g. titleInfo_title or relatedItem_1_titleInfo_title)
+      //   - date (originInfo_dateCreated_2_#text)
+      //   - url (location_url_2_#text)
+      const header = results.meta.fields;
+      function getFirstAvailable(row, keys) {
+        for (let k of keys) if (row[k] && row[k].trim()) return row[k].trim();
+        return "";
+      }
+      publications = results.data.map(row => ({
+        title: getFirstAvailable(row, ["titleInfo_title", "relatedItem_1_titleInfo_title"]),
+        date: row["originInfo_dateCreated_2_#text"] || "",
+        url: row["location_url_2_#text"] || ""
+      }));
+      // Enable search
+      const searchInput = document.getElementById("search");
+      searchInput.disabled = false;
+      searchInput.classList.remove("disabled");
+      searchInput.value = "";
+      renderResults([]);
+      alert(`Loaded ${publications.length} records! Now search by month or season.`);
+    }
+  });
+});
+
+</script>
+</body>
+</html>
