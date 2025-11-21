@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Browse by State - Interactive Map</title>
+   <link rel="stylesheet" href="../date/style.css" />
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #f8f7f2;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      margin: 32px 0 0 0;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .map-container {
+      padding: 20px;
+      flex: 1;
+      max-height:600px;
+      overflow-y: hidden;
+    }
+    .sidebar {
+      display: none;
+      min-width: 350px;
+      background: #204534;
+      color: #fff;
+      padding: 32px 28px;
+      margin-left: 24px;
+      margin-right:100px;
+      border-radius: 0.5em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      font-size: 1.04em;
+      max-width: 350px;
+      box-sizing: border-box;
+    }
+    .sidebar.active {
+      display: block;
+      animation: slideIn 0.25s;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(30px);}
+      to { opacity: 1; transform: translateX(0);}
+    }
+    .sidebar h2 {
+      color: #fff3ae;
+      font-size: 2em;
+      margin-top: 0;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+    .sidebar ul {
+      padding: 0 0 0 20px;
+    }
+    .sidebar .sidebar-btn  {
+      display: block;
+      margin-top: 22px;
+      width: 95%;
+      padding: 12px;
+      background: #f5d162;
+      color: #234420;
+      font-weight: bold;
+      font-size: 1em;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.10);
+      transition: background 0.13s;
+      cursor: pointer;
+    }
+    .sidebar .sidebar-btn:hover {
+      background: #ffe595;
+    }
+    .title {
+      font-size: 2.4em;
+      font-weight: 800;
+      color: #234420;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      margin: 20px;
+        text-align: center;
+      
+    }
+
+    .views {
+       display: flex;
+       justify-content: center;
+       gap: 10px
+
+    }
+
+     .view-btn  {
+      display: block;
+      margin-top: 22px;
+      padding: 12px;
+      background: #f5d162;
+      color: #234420;
+      font-weight: bold;
+      font-size: 1em;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.10);
+      transition: background 0.13s;
+      cursor: pointer;
+    }
+
+    .subtitle {
+      color: #222;
+      font-weight: 500;
+      font-size: 1.05em;
+      margin-bottom: 30px;
+    }
+    /* Map styles */
+    svg {
+      width: 850px;
+      height: auto;
+      display: block;
+      background: #f8f7f2;
+    }
+    .state {
+      cursor: pointer;
+      stroke: #204534;
+      stroke-width: 2.3;
+      filter: brightness(0.97);
+      transition: fill 0.15s, filter 0.15s;
+    }
+    .state:hover, .state.selected {
+      filter: brightness(1.15) drop-shadow(0 0 5px #87977463);
+      stroke: #ffe595;
+      stroke-width: 4;
+      z-index: 10;
+    }
+    .state-label {
+      font-family: 'Georgia', serif;
+      font-size: 1.17em;
+      pointer-events: none;
+      font-weight: bold;
+      fill: #fffbe8;
+      text-shadow: 0 1px 3px #23442053;
+      user-select: none;
+    }
+    .items-label {
+      font-size: 0.90em;
+      font-weight: normal;
+      fill: #d9e5bf;
+      user-select: none;
+    }
+   /* Timeline */
+    .timeline-container {width:80%; margin:40px auto 80px auto; margin-top:-40px}
+
+    /*Media*/
+    @media (max-width: 1000px) {
+      .container { flex-direction: column; align-items: center; }
+      .map-container { padding: 10px; }
+      .sidebar { margin-left: 0; margin-top: 24px;}
+      svg { width: 99vw; }
+    }
+
+  </style>
+</head>
+<body>
+ <div class="title">Browse by State</div>
+ <div class="views">
+          <div class="view-btn" target="_blank">List</div>
+          <div class="view-btn" target="_blank">Map</div>
+ </div>
+  <div class="container">
+    <div class="map-container">
+      <!-- Wikipedia-derived SVG (only relevant states) -->
+      <svg viewBox="200 200 659 693">
+        <!-- MO -->
+        <a tabindex="0" class="state-link">
+           <path xmlns="http://www.w3.org/2000/svg" id="MO" class="state" fill="#93b789" class="mo" d="m 555.3,248.9 -1.1,-1.1 -.6,-1.6 -1.7,-1.3 -14.3,.8 -27.2,1.2 -25.9,-.1 1.3,1.3 -.3,1.4 2.1,3.7 3.9,6.3 2.9,3 2,.6 .9,-1 1.5,2.1 -.1,1.2 -2.7,2.6 -.5,2.3 2.5,2.5 2.6,4.7 3.2,.7 .5,48.1 .2,10.8 39.1,-.7 39.8,-2 1.6,2.5 v 2.2 l -1.7,1.5 -2.8,5.1 11.2,-.8 1,-2 1.2,-.5 v -.7 l -1.2,-1.1 -.6,-1 1.7,.2 .8,-.7 -1.4,-1.5 1.4,-.5 .1,-1 -.6,-1 v -1.3 l -.7,-.7 .2,-1 h 1.1 l .7,.7 -.3,1 .8,.7 .8,-1 1,-2.7 1.4,.9 .7,-.4 1.2,-4.1 -1,-1 1,-2 .2,-.9 -1.3,-.8 h -2.8 l -1.4,-1.5 -1.8,-3.8 v -1.9 l .8,-.6 .1,-1.3 -1.7,-1.9 -.9,-2.5 -2.7,-4.1 -4.8,-1.3 -7.4,-7.1 -.4,-2.4 2.8,-7.6 -.4,-1.9 1.2,-1.1 v -1.3 l -2.8,-1.5 -3,-.7 -3.4,1.2 -1.3,-2.3 .6,-1.9 -.7,-2.4 -8.6,-8.4 -2.2,-1.5 -2.5,-5.9 -1.2,-5.4 1.4,-3.7 z">
+<title>Missouri</title></path>
+   <text x="535" y="285" text-anchor="middle" class="state-label">MO</text>
+    <text x="535" y="295" text-anchor="middle" class="items-label">(35)</text>
+        </a>
+        <!-- AR -->
+        <a tabindex="0" class="state-link">
+        <path xmlns="http://www.w3.org/2000/svg" id="AR" class="state" fill="#7AA87B" class="ar" d="m 584.2,367 .9,-2.2 1.2,.5 .7,-1 -.8,-.7 .3,-1.5 -1.1,-.9 .6,-1 -.1,-1.5 -1.1,-.1 .8,-.8 1.3,.8 .3,-1.4 -.4,-1.1 .1,-.7 2,.6 -.4,-1.5 1.6,-1.3 -.5,-.9 -1.1,.1 -.6,-.9 .9,-.9 1.6,-.2 .5,-.8 1.4,-.2 -.1,-.8 -.9,-.9 v -.5 h 1.5 l .4,-.7 -1.4,-1 -.1,-.6 -11.2,.8 2.8,-5.1 1.7,-1.5 v -2.2 l -1.6,-2.5 -39.8,2 -39.1,.7 4.1,24.4 -.7,39 2.6,2.3 2.8,-1.3 3.2,.8 .2,11.9 52.3,-1.3 1.2,-1.5 .5,-3 -1.5,-2.3 -.5,-2.2 .9,-.7 v -.8 l -1.7,-1.1 -.1,-.7 1.6,-.9 -1.2,-1.1 1.7,-7.1 3.4,-1.6 v -.8 l -1.1,-1.4 2.9,-5.4 h 1.9 l 1.5,-1.2 -.3,-5.2 3.1,-4.5 1.8,-.6 -.5,-3.1 z">
+   <title>Arkansas</title></path>
+   <text x="535" y="380" text-anchor="middle" class="state-label">AR</text>
+    <text x="535" y="397" text-anchor="middle" class="items-label">(83)</text>
+        </a>
+        <!-- OK -->
+        <a tabindex="0" class="state-link">
+          <path id="OK" class="state" fill="#a1be92" xmlns="http://www.w3.org/2000/svg" class="ok" d="m 501.5,398.6 -4.6,-3.8 -2.2,-.9 -.5,1.6 -5.1,.3 -.6,-1.5 -5,2.5 -1.6,-.7 -3.7,.3 -.6,1.7 -3.6,.9 -1.3,-1.2 -1.2,.1 -2,-1.8 -2.1,.7 -2,-.5 -1.8,-2 -2.5,4.2 -1.2,.8 -1,-1.8 .3,-2 -1.2,-.7 -2.3,2.5 -1.7,-1.2 -.1,-1.5 -1.3,.5 -2.6,-1.7 -3,2.6 -2.3,-1.1 .7,-2.1 -2.3,.1 -1.9,-3 -3.5,-1.1 -2,2.3 -2.3,-2.2 -1.4,.4 -2,.1 -3.5,-1.9 -2.3,.1 -1.2,-.7 -.5,-2.9 -2.3,-1.7 -1.1,1.5 -1.4,-1 -1.2,-.4 -1.1,1 -1.5,-.3 -2.5,-3 -2.7,-1.3 1.4,-42.7 -52.6,-3.2 .6,-10.6 16.5,1 67.7,2.9 62,.1 .2,10.8 4.1,24.4 -.7,39 z">
+<title>Oklahoma</title></path>
+    <text x="450" y="365" text-anchor="middle" class="state-label">OK</text>
+    <text x="450" y="377" text-anchor="middle" class="items-label">(33)</text>
+        </a>
+        <!-- TX -->
+        <a tabindex="0" class="state-link">
+        <path id="TX" class="state" fill="#62A267"  xmlns="http://www.w3.org/2000/svg" class="tx" d="m 282.3,429 .3,-3 34.4,3.6 31.8,2.6 7.9,-99.3 .8,0 52.6,3.2 -1.4,42.7 2.7,1.3 2.5,3 1.5,.3 1.1,-1 1.2,.4 1.4,1 1.1,-1.5 2.3,1.7 .5,2.9 1.2,.7 2.3,-.1 3.5,1.9 2,-.1 1.4,-.4 2.3,2.2 2,-2.3 3.5,1.1 1.9,3 2.3,-.1 -.7,2.1 2.3,1.1 3,-2.6 2.6,1.7 1.3,-.5 .1,1.5 1.7,1.2 2.3,-2.5 1.2,.7 -.3,2 1,1.8 1.2,-.8 2.5,-4.2 1.8,2 2,.5 2.1,-.7 2,1.8 1.2,-.1 1.3,1.2 3.6,-.9 .6,-1.7 3.7,-.3 1.6,.7 5,-2.5 .6,1.5 5.1,-.3 .5,-1.6 2.2,.9 4.6,3.8 6.4,1.9 2.6,2.3 2.8,-1.3 3.2,.8 .2,11.9 .5,19.9 .7,3.4 2.6,2.8 .7,5.4 3.8,4.6 .8,4.3 h 1 l -.1,7.3 -3.3,6.4 1.3,2.3 -1.3,1.5 .7,3 -.1,4.3 -2.2,3.5 -.1,.8 -1.7,1.2 1,1.8 1.2,1.1 -3.5,.3 -8.4,3.9 -3.5,1.4 -1.8,1.8 -.7,-.5 2.1,-2.3 1.8,-.7 .5,-.9 -2.9,-.1 -.7,-.8 .8,-2 -.9,-1.8 h -.6 l -2.4,1.3 -1.9,2.6 .3,1.7 3.3,3.4 1.3,.3 v .8 l -2.3,1.6 -4.9,4 -4,3.9 -3.2,1.4 -5,3 -3.7,2 -4.5,1.9 -4.1,2.5 3.2,-3 v -1.1 l .6,-.8 -.2,-1.8 -1.5,-.1 -1.1,1.5 -2.6,1.3 -1.8,-1.2 -.3,-1.7 h -1.5 l .8,2.2 1.4,.7 1.2,.9 1.8,1.6 -.7,.8 -3.9,1.7 -1.7,.1 -1.2,-1.2 -.5,2.1 .5,1.1 -2.7,2 -1.5,.2 -.8,.7 -.4,1.7 -1.8,3.3 -1.6,.7 -1.6,-.6 -1.8,1.1 .3,1.4 1.3,.8 1,.8 -1.8,3.5 -.3,2.8 -1,1.7 -1.4,1 -2.9,.4 1.8,.6 1.9,-.6 -.4,3.2 -1.1,-.1 .2,1.2 .3,1.4 -1.3,.9 v 3.1 l 1.6,1.4 .6,3.1 -.4,2.2 -1,.4 .4,1.5 1.1,.4 .8,1.7 v 2.6 l 1.1,2.1 2.2,2.6 -.1,.7 -2.2,-.2 -1.6,1.4 .2,1.4 -.9,-.3 -1.4,-.2 -3.4,-3.7 -2.3,-.6 h -7.1 l -2.8,-.8 -3.6,-3 -1.7,-1 -2.1,.1 -3.2,-2.6 -5.4,-1.6 v -1.3 l -1.4,-1.8 -.9,-4.7 -1.1,-1.7 -1.7,-1.4 v -1.6 l -1.4,-.6 .6,-2.6 -.3,-2.2 -1.3,-1.4 .7,-3 -.8,-3.2 -1.7,-1.4 h -1.1 l -4,-3.5 .1,-1.9 -.8,-1.7 -.8,-.2 -.9,-2.4 -2,-1.6 -2.9,-2.5 -.2,-2.1 -1,-.7 .2,-1.6 .5,-.7 -1.4,-1.5 .1,-.7 -2,-2.2 .1,-2.1 -2.7,-4.9 -.1,-1.7 -1.8,-3.1 -5.1,-4.8 v -1.1 l -3.3,-1.7 -.1,-1.8 -1.2,-.4 v -.7 l -.8,-.2 -2.1,-2.8 h -.8 l -.7,-.6 -1.3,1.1 h -2.2 l -2.6,-1.1 h -4.6 l -4.2,-2.1 -1.3,1.9 -2.2,-.6 -3.3,1.2 -1.7,2.8 -2,3.2 -1.1,4.4 -1.4,1.2 -1.1,.1 -.9,1.6 -1.3,.6 -.1,1.8 -2.9,.1 -1.8,-1.5 h -1 l -2,-2.9 -3.6,-.5 -1.7,-2.3 -1.3,-.2 -2.1,-.8 -3.4,-3.4 .2,-.8 -1.6,-1.2 -1,-.1 -3.4,-3.1 -.1,-2 -2.3,-4 .2,-1.6 -.7,-1.3 .8,-1.5 -.1,-2.4 -2.6,-4.1 -.6,-4.2 -1.6,-1.6 v -1 l -1.2,-.2 -.7,-1.1 -2.4,-1.7 -.9,-.1 -1.9,-1.6 v -1.1 l -2.9,-1.8 -.6,-2.1 -2.6,-2.3 -3.2,-4.4 -3,-1.3 -2.1,-1.8 .2,-1.2 -1.3,-1.4 -1.7,-3.7 -2.4,-1 z m 174.9,138.3 .8,.1 -.6,-4.8 -3.5,-12.3 -.2,-8.1 4.9,-10.5 6.1,-8.2 7.2,-5.1 v -.7 h -.8 l -2.6,1 -3.6,2.3 -.7,1.5 -8.2,11.6 -2.8,7.9 v 8.8 l 3.6,12 z">
+<title>Texas</title></path>
+    <text x="420" y="450" text-anchor="middle" class="state-label">TX</text>
+    <text x="420" y="468" text-anchor="middle" class="items-label">(102 ITEMS)</text>
+        </a>
+        <!-- LA -->
+        <a tabindex="0" class="state-link">
+           <path id="LA" class="state" fill="#a0c09e" xmlns="http://www.w3.org/2000/svg" class="la" d="m 602.5,472.8 -1.2,-1.8 .3,-1.3 -4.8,-6.8 .9,-4.6 1,-1.4 .1,-1.4 -36,2 1.7,-11.9 2.4,-4.8 6,-8.4 -1.8,-2.5 h 2 v -3.3 l -2.4,-2.5 .5,-1.7 -1.2,-1 -1.6,-7.1 .6,-1.4 -52.3,1.3 .5,19.9 .7,3.4 2.6,2.8 .7,5.4 3.8,4.6 .8,4.3 h 1 l -.1,7.3 -3.3,6.4 1.3,2.3 -1.3,1.5 .7,3 -.1,4.3 -2.2,3.5 -.1,.8 -1.7,1.2 1,1.8 1.2,1.1 1.6,-1.3 5.3,-.9 6.1,-.1 9.6,3.8 8,1 1.5,-1.4 1.8,-.2 4.8,2.2 1.6,-.4 1.1,-1.5 -4.2,-1.8 -2.2,1 -1.1,-.2 -1.4,-2 3.3,-2.2 1.6,-.1 v 1.7 l 1.5,-.1 3.4,-.3 .4,2.3 1.1,.4 .6,1.9 4.8,1 1.7,1.6 v .7 h -1.2 l -1.5,1.7 1.7,1.2 5.4,1 2.7,2.8 4.4,-1 -3.7,.2 -.1,-.6 2.8,-.7 .2,-1.8 1.2,-.3 v -1.4 l 1.1,.1 v 1.6 l 2.5,.1 .8,-1.9 .9,.3 .2,2.5 1.2,.2 -1.8,2 2.6,-.9 2,-1.1 2.9,-3.3 h -.7 l -1.3,1.2 -.4,-.1 -.5,-.8 .9,-1.2 v -2.3 l 1.1,-.8 .7,.7 1,-.8 1,-.1 .6,1.3 -.6,1.9 h 2.4 l 5.1,1.7 .5,1.3 1.6,1.4 2.8,.1 1.3,.7 1.8,-1 .9,-1.7 v -1.7 h -1.4 l -1.2,-1.4 -1.1,-1.1 -3.2,-.9 -2.6,.2 -4.2,-2.4 v -2.3 l 1.3,-1 2.4,.6 -3.1,-1.6 .2,-.8 h 3.6 l 2.6,-3.5 -2.6,-1.8 .8,-1.5 -1.2,-.8 h -.8 l -2,2.1 v 2.1 l -.6,.7 -1.1,-.1 -1.6,-1.4 h -1.3 v -1.5 l .6,-.7 .8,.7 1.7,-1.6 .7,-1.6 .8,-.3 z m -10.3,-2.7 1.9,1 .8,1.1 2.5,.1 1.5,.8 .2,1.4 -.4,.6 -.9,-1.5 -1.4,1.2 -.9,1.4 -2.8,.8 -1.6,.1 -3.7,-1 .1,-1.7 2,-2 1.1,-2.4 z m -4.7,1.2 v 1.1 l -1.8,2 h -1.2 v -2.2 l 1.6,-1.5 z">
+<title>Louisiana</title></path>
+    <text x="540" y="460" text-anchor="middle" class="state-label">LA</text>
+    <text x="540" y="477" text-anchor="middle" class="items-label">(111)</text>
+        </a>
+        <!-- MS -->
+        <a tabindex="0" class="state-link">
+ <path id="MS" class="state" fill="#B5CEB3"  xmlns="http://www.w3.org/2000/svg" class="ms" d="m 623.8,468.6 -5,.1 -2.4,-1.5 -7.9,2.5 -.9,-.7 -.5,.2 -.1,1.6 -.6,.1 -2.6,2.7 -.7,-.1 -.6,-.7 -1.2,-1.8 .3,-1.3 -4.8,-6.8 .9,-4.6 1,-1.4 .1,-1.4 -36,2 1.7,-11.9 2.4,-4.8 6,-8.4 -1.8,-2.5 h 2 v -3.3 l -2.4,-2.5 .5,-1.7 -1.2,-1 -1.6,-7.1 .6,-1.4 1.2,-1.5 .5,-3 -1.5,-2.3 -.5,-2.2 .9,-.7 v -.8 l -1.7,-1.1 -.1,-.7 1.6,-.9 -1.2,-1.1 1.7,-7.1 3.4,-1.6 v -.8 l -1.1,-1.4 2.9,-5.4 h 1.9 l 1.5,-1.2 -.3,-5.2 3.1,-4.5 1.8,-.6 -.5,-3.1 38.3,-2.6 1.3,2 -1.3,67 4.4,33.2 z">
+<title>Mississippi</title></path>
+    <text x="600" y="430" text-anchor="middle" class="state-label">MS</text>
+    <text x="600" y="447" text-anchor="middle" class="items-label">(305)</text>
+        </a>
+        <!-- AL -->
+        <a tabindex="0" class="state-link">
+          <path id="AL" class="state" fill="#98b68e" xmlns="http://www.w3.org/2000/svg" class="al" d="m 643,467.4 .4,-7.3 -.9,-1.2 -1.7,-.7 -2.5,-2.8 .5,-2.9 48.8,-5.1 -.7,-2.2 -1.5,-1.5 -.5,-1.4 .6,-6.3 -2.4,-5.7 .5,-2.6 .3,-3.7 2.2,-3.8 -.2,-1.1 -1.7,-1 v -3.2 l -1.8,-1.9 -2.9,-6.1 -12.9,-45.8 -45.7,4 1.3,2 -1.3,67 4.4,33.2 .9,-.5 1.3,.1 .6,.4 .8,-.1 2,-3.8 v -2.3 l 1.1,-1.1 1.4,.5 3.4,6.4 v .9 l -3.3,2.2 3.5,-.4 4.9,-1.6 z">
+<title>Alabama</title></path>
+    <text x="650" y="420" text-anchor="middle" class="state-label">AL</text>
+    <text x="650" y="437" text-anchor="middle" class="items-label">(214)</text>
+        </a>
+        <!-- TN -->
+        <a tabindex="0" class="state-link">
+                    <path id="TN" class="state" fill="#59835a" xmlns="http://www.w3.org/2000/svg" class="tn" d="m 620.9,365.1 45.7,-4 22.9,-2.9 .1,-4.9 1.4,-1.3 1.5,.1 1.3,-.9 .8,-4.1 4.6,-3 3.6,-.5 3.2,-2.6 .5,-1.2 4.7,-2.4 .6,-3.4 4,-3.3 .8,.2 .1,1.5 .8,.8 1.5,-1.2 .7,-2.1 3.5,-2.5 2.6,1.1 2.4,-5.2 1.4,-1.2 1.5,.1 0,-5.2 .3,-.7 -4.6,.5 -.2,1 -28.9,3.3 -5.6,1.4 -20.5,1.4 -5.2,.8 -17.4,1 -2.6,.8 -22.6,2 -.7,-.6 h -3.7 l 1.2,3.2 -.6,.9 -23.3,1.5 -.8,1 -.8,-.7 h -1 v 1.3 l .6,1 -.1,1 -1.4,.5 1.4,1.5 -.8,.7 -1.7,-.2 .6,1 1.2,1.1 v .7 l -1.2,.5 -1,2 .1,.6 1.4,1 -.4,.7 h -1.5 v .5 l .9,.9 .1,.8 -1.4,.2 -.5,.8 -1.6,.2 -.9,.9 .6,.9 1.1,-.1 .5,.9 -1.6,1.3 .4,1.5 -2,-.6 -.1,.7 .4,1.1 -.3,1.4 -1.3,-.8 -.8,.8 1.1,.1 .1,1.5 -.6,1 1.1,.9 -.3,1.5 .8,.7 -.7,1 -1.2,-.5 -.9,2.2 -1.6,.7 z">
+<title>Tennessee</title></path>
+    <text x="655" y="343" text-anchor="middle" class="state-label">TN</text>
+    <text x="655" y="356" text-anchor="middle" class="items-label">(168)</text>
+        </a>
+        <!-- KY -->
+        <a tabindex="0" class="state-link">
+            <path id="KY" class="state" fill="#8ab085"xmlns="http://www.w3.org/2000/svg" class="ky" d="m 692.1,322.5 -20.5,1.4 -5.2,.8 -17.4,1 -2.6,.8 -22.6,2 -.7,-.6 h -3.7 l 1.2,3.2 -.6,.9 -23.3,1.5 1,-2.7 1.4,.9 .7,-.4 1.2,-4.1 -1,-1 1,-2 .2,-.9 -1.3,-.8 -.3,-1.8 4,-3.7 6.9,3 1.5,-.3 .4,-2.4 -1.7,-1.8 .4,-3.3 1,-.5 1.2,.6 .6,-1.2 3.7,-.6 .1,-.9 -1.5,-2.2 -.1,-1.1 2.2,-2.7 0,-.9 1.1,.8 .6,-1 -.7,-1.7 4.6,-.5 .2,1.2 1.1,.2 .4,-.9 -.6,-1.3 .3,-.8 1.3,.8 1.7,-.4 1.7,.6 3.4,2.1 1.8,-2.8 3.5,-2.2 3,3.3 1.6,-2.1 .3,-2.7 3.8,-2.3 .2,1.3 1.9,1.2 3,-.2 1.2,-.7 .1,-3.4 2.5,-3.7 4.6,-4.4 -.1,-1.7 1.2,-3.8 2.2,1 6.7,-4.5 -.4,-1.7 -1.5,-2.1 1,-1.9 1.3,.5 2.2,.1 1.9,-.8 2.9,1.2 2.2,3.4 v 1 l 4.1,.7 2.3,-.2 1.9,2.1 2.2,.2 v -1 l 1.9,-.8 3,.8 1.2,.8 1.3,-.7 h .9 l .6,-1.7 3.4,-1.8 .5,.8 .8,2.9 3.5,1.4 1.2,2.1 -.1,1.1 .6,1 -.6,3.6 1.9,1.6 .8,1.1 1,.6 -.1,.9 4.4,5.6 h 1.4 l 1.5,1.8 1.2,.3 1.4,-.1 -4.9,6.6 -2.9,1 -3,3 -.4,2.2 -2.1,1.3 -.1,1.7 -1.4,1.4 -1.8,.5 -.5,1.9 -1,.4 -6.9,4.2 z m -98,11.3 -.7,-.7 .2,-1 h 1.1 l .7,.7 -.3,1 z">
+<title>Kentucky</title></path>
+    <text x="685" y="305" text-anchor="middle" class="state-label">KY</text>
+    <text x="685" y="318" text-anchor="middle" class="items-label">(78)</text>
+        </a>
+        <!-- GA -->
+        <a tabindex="0" class="state-link">
+         <path id="GA" class="state" fill="#74a26e" xmlns="http://www.w3.org/2000/svg" class="ga" d="m 761.8,414.1 v 1.4 l -4.2,6.2 -1.2,.2 1.5,.5 v 2 l -.9,1.1 -.6,6 -2.3,6.2 .5,2 .7,5.1 -3.6,.3 -4,-.7 -1.7,-.9 -2.2,1.4 v 2.5 l 1.4,2.1 -.5,4.3 -2.1,.6 -1,-1.1 -.6,-3.2 -50.1,3.3 -3.3,-6 -.7,-2.2 -1.5,-1.5 -.5,-1.4 .6,-6.3 -2.4,-5.7 .5,-2.6 .3,-3.7 2.2,-3.8 -.2,-1.1 -1.7,-1 v -3.2 l -1.8,-1.9 -2.9,-6.1 -12.9,-45.8 22.9,-2.9 21.4,-3 -.1,1.9 -1.9,1 -1.4,3.2 .2,1.3 6.1,3.8 2.6,-.3 3.1,4 .4,1.7 4.2,5.1 2.6,1.7 1.4,.2 2.2,1.6 1.1,2.2 2,1.6 1.8,.5 2.7,2.7 .1,1.4 2.6,2.8 5,2.3 3.6,6.7 .3,2.7 3.9,2.1 2.5,4.8 .8,3.1 4.2,.4 z">
+<title>Georgia</title></path>
+    <text x="710" y="400" text-anchor="middle" class="state-label">GA</text>
+    <text x="710" y="417" text-anchor="middle" class="items-label">(176)</text>
+        </a>
+        <!-- FL -->
+        <a tabindex="0" class="state-link">
+         <path id="FL" class="state" fill="#89ba88" xmlns="http://www.w3.org/2000/svg" class="fl" d="m 751.7,445.1 -4,-.7 -1.7,-.9 -2.2,1.4 v 2.5 l 1.4,2.1 -.5,4.3 -2.1,.6 -1,-1.1 -.6,-3.2 -50.1,3.3 -3.3,-6 -48.8,5.1 -.5,2.9 2.5,2.8 1.7,.7 .9,1.2 -.4,7.3 -1.1,.6 .5,.4 1,-.3 .7,-.8 10.5,-2.7 9.2,-.5 8.1,1.9 8.5,5 2.4,.8 2.2,2 -.1,2.7 h 2.4 l 1.9,-1 2.5,.1 2,-.8 2.9,-2 3.1,-2.9 1.1,-.4 .6,.5 h 1.4 l .5,-.8 -.5,-1.2 -.6,-.6 .2,-.8 2,-1.1 5,-.4 .8,1 1,.1 2.3,1 3,1.8 1.2,1.7 1.1,1.2 2.8,1.4 v 2.4 l 2.8,1.9 1,.1 1.6,1.4 .7,1.6 1,.2 .8,2.1 .7,.6 1,-1.1 2.9,.1 .5,1.4 1.1,.9 v 1.3 l 2.9,2.2 .2,9.6 -1.8,5.8 1,1.2 -.2,3.4 -.8,1.4 .7,1.2 2.3,2.3 .3,1.5 .8,1 -.4,-1.9 1.3,-.6 .8,-3.6 -3,-1.2 .1,-.6 2.6,-.4 .9,2.6 1.1,.6 .1,-2 1.1,.3 .6,.8 -.1,.7 -2.9,4.2 -.2,1.1 -1.7,1.9 v 1.1 l 3.7,3.8 5.3,7.9 1.8,2.1 v 1.8 l 2.8,4.6 2.3,.6 .7,-1.2 -2.1,.3 -3,-4.5 .2,-1.4 1.5,-.8 v -1.5 l -.6,-1.3 .9,-.9 .4,.9 .7,.5 v 4 l -1.2,-.6 -.8,.9 1.4,1.6 1,2.6 1.2,-.6 2.3,1.2 2.1,2.2 1.6,5.1 3.1,4.8 .8,-1.3 2.8,-.5 3.2,1.3 .3,1.7 3.3,3.8 .1,1.1 2.2,2.7 -.7,.5 v 2.7 l 2.7,1.4 h 1.5 l 2.7,-1.8 1.5,.3 1.1,.4 2.3,-1.7 .2,-.7 1.2,.3 2.4,-1.7 1.3,-2.3 -.7,-3.2 -.2,-1.3 1.1,-4 .6,-.2 .6,1.6 .8,-1.8 -.8,-7.2 -.4,-10.5 -1,-6.8 -.7,-1.7 -6.6,-11.1 -5.2,-9.1 -2.2,-3.3 -1.3,-3.6 -.2,-3.4 .9,-.3 v -.9 l -1.1,-2.2 -4,-4 -7.6,-9.7 -5.7,-10.4 -4.3,-10.7 -.6,-3.7 -1.2,-1 -.5,-3.8 z m 9.2,134.5 1.7,-.1 -.7,-1 z m 7.3,-1.1 v -.7 l 1.6,-.2 3.7,-3.3 1.5,-.6 2.4,-.9 .3,1.3 1.7,.8 -2.6,1.2 h -2.4 l -3.9,2.5 z m 17.2,-7.6 -3,1.4 -1,1.3 1.1,.1 z m 3.8,-2.9 -1.1,.3 -1.4,2 1.1,-.2 1.5,-1.6 z m 8.3,-15.7 -1.7,5.6 -.8,1 -1,2.6 -1.2,1.6 -.7,1.7 -1.9,2.2 v .9 l 2.7,-2.8 2.4,-3.5 .6,-2 2.1,-4.9 z">
+<title>Florida</title></path>
+    <text x="775" y="525" text-anchor="middle" class="state-label">FL</text>
+    <text x="775" y="542" text-anchor="middle" class="items-label">(62)</text>
+        </a>
+      </svg>
+    </div>
+    <aside class="sidebar" id="sidebar">
+      <!-- Content filled by JS -->
+    </aside>
+  </div>
+
+  <!-- List with timeline -->
+<section class="card timeline-container" id="list">
+      <div class="header">
+        <div class="header-inner">
+          <div class="header-title" id="headerTitle">LA Publication Title</div>
+           <div id="list-ruler" style="display:none"></div>
+        </div>
+      </div>
+      <div class="scroll" id="rows"><div class="row"><div class="row-meta">
+        <span class="row-title" title="The Colored Teacher">The Colored Teacher</span>
+        <span class="row-sub" title="LA · 3 items">LA · 3 items</span>
+      </div><div class="row-timeline"><div class="ruler" style="width:837px"><div class="mid"></div><div class="tick" style="left:0px"><div class="stem"></div><div class="lbl">1900</div></div><div class="tick" style="left:36.391304347826086px"><div class="stem"></div><div class="lbl">1910</div></div><div class="tick" style="left:157.69565217391306px"><div class="stem"></div><div class="lbl">1920</div></div><div class="tick" style="left:279px"><div class="stem"></div><div class="lbl">1930</div></div><div class="tick" style="left:400.304347826087px"><div class="stem"></div><div class="lbl">1940</div></div><div class="tick" style="left:521.6086956521739px"><div class="stem"></div><div class="lbl">1950</div></div><div class="tick" style="left:642.9130434782609px"><div class="stem"></div><div class="lbl">1960</div></div><div class="tick" style="left:764.2173913043478px"><div class="stem"></div><div class="lbl">1970</div></div><div class="tick" style="left:837px"><div class="stem"></div><div class="lbl">1980</div></div><div class="marker" style="left:0px" title="1907: Vol. 1, No. 4"></div><div class="marker" style="left:0px" title="1907: Vol. 2, No. 3"></div><div class="marker" style="left:4px" title="1907: Vol. 2, No. 1"></div></div></div></div><div class="row"><div class="row-meta">
+        <span class="row-title" title="The Louisiana Colored Teachers' Journal">The Louisiana Colored Teachers' Journal</span>
+        <span class="row-sub" title="LA · 33 items">LA · 33 items</span>
+      </div><div class="row-timeline"><div class="ruler" style="width:837px"><div class="mid"></div><div class="tick" style="left:0px"><div class="stem"></div><div class="lbl">1900</div></div><div class="tick" style="left:36.391304347826086px"><div class="stem"></div><div class="lbl">1910</div></div><div class="tick" style="left:157.69565217391306px"><div class="stem"></div><div class="lbl">1920</div></div><div class="tick" style="left:279px"><div class="stem"></div><div class="lbl">1930</div></div><div class="tick" style="left:400.304347826087px"><div class="stem"></div><div class="lbl">1940</div></div><div class="tick" style="left:521.6086956521739px"><div class="stem"></div><div class="lbl">1950</div></div><div class="tick" style="left:642.9130434782609px"><div class="stem"></div><div class="lbl">1960</div></div><div class="tick" style="left:764.2173913043478px"><div class="stem"></div><div class="lbl">1970</div></div><div class="tick" style="left:837px"><div class="stem"></div><div class="lbl">1980</div></div><div class="marker" style="left:493.3478260869565px" title="1948: Vol. 27, No. 3"></div><div class="marker" style="left:481.21739130434787px" title="1947: Vol. 23, No. 6"></div><div class="marker" style="left:485.21739130434787px" title="1947: Vol. 24, No. 4"></div><div class="marker" style="left:396.304347826087px" title="1940: Vol. 13, No. 2"></div><div class="marker" style="left:489.21739130434787px" title="1947: Vol. 22, No. 1"></div><div class="marker" style="left:497.3478260869565px" title="1948: Vol. 25, No. 1"></div><div class="marker" style="left:501.3478260869565px" title="1948: Vol. 26, No. 2"></div><div class="marker" style="left:481.21739130434787px" title="1947: Vol. 23, No. 3"></div><div class="marker" style="left:384.17391304347825px" title="1939: Vol. 12, No. 3"></div><div class="marker" style="left:372.04347826086956px" title="1938: Vol. 12, No. 1"></div><div class="marker" style="left:323.5217391304348px" title="1934: Vol. 6, No. 2"></div><div class="marker" style="left:400.304347826087px" title="1940: Vol. 13, No. 4"></div><div class="marker" style="left:408.4347826086957px" title="1941: Vol. 14, No. 4"></div><div class="marker" style="left:388.17391304347825px" title="1939: Vol. 12, No. 4"></div><div class="marker" style="left:404.304347826087px" title="1940: Vol. 13, No. 3"></div><div class="marker" style="left:412.4347826086957px" title="1941: Vol. 14, No. 2"></div><div class="marker" style="left:299.2608695652174px" title="1932: Vol. 4, No. 10"></div><div class="marker" style="left:376.04347826086956px" title="1938: Vol. 9, No. 5"></div><div class="marker" style="left:311.3913043478261px" title="1933: Vol. 6, No. 1"></div><div class="marker" style="left:359.9130434782609px" title="1937: Vol. 9, No. 1"></div><div class="marker" style="left:347.78260869565213px" title="1936: Vol. 9, No. 4"></div><div class="marker" style="left:363.9130434782609px" title="1937: Vol. 10, No. 5"></div><div class="marker" style="left:287.1304347826087px" title="1931: Vol. 4, No. 3"></div><div class="marker" style="left:275px" title="1930: Vol. 4, No. 2"></div><div class="marker" style="left:392.17391304347825px" title="1939: Vol. 12, No. 2"></div><div class="marker" style="left:303.2608695652174px" title="1932: Vol. 5, No. 14. Oct. 1932"></div><div class="marker" style="left:384.17391304347825px" title="1939: Vol. 12, No. 5"></div><div class="marker" style="left:416.4347826086957px" title="1941: Vol. 14, No. 5"></div><div class="marker" style="left:307.2608695652174px" title="1932: Vol. 4, No. 9"></div><div class="marker" style="left:380.04347826086956px" title="1938: Vol. 9, No. 4"></div><div class="marker" style="left:367.9130434782609px" title="1937: Vol. 10, No. 4"></div><div class="marker" style="left:351.78260869565213px" title="1936: Vol. 10, No. 2"></div><div class="marker" style="left:359.9130434782609px" title="1937: Vol. 9, No. 3"></div></div></div></div><div class="row"><div class="row-meta">
+        <span class="row-title" title="Louisiana Education Association Journal">Louisiana Education Association Journal</span>
+        <span class="row-sub" title="LA · 74 items">LA · 74 items</span>
+      </div><div class="row-timeline"><div class="ruler" style="width:837px"><div class="mid"></div><div class="tick" style="left:0px"><div class="stem"></div><div class="lbl">1900</div></div><div class="tick" style="left:36.391304347826086px"><div class="stem"></div><div class="lbl">1910</div></div><div class="tick" style="left:157.69565217391306px"><div class="stem"></div><div class="lbl">1920</div></div><div class="tick" style="left:279px"><div class="stem"></div><div class="lbl">1930</div></div><div class="tick" style="left:400.304347826087px"><div class="stem"></div><div class="lbl">1940</div></div><div class="tick" style="left:521.6086956521739px"><div class="stem"></div><div class="lbl">1950</div></div><div class="tick" style="left:642.9130434782609px"><div class="stem"></div><div class="lbl">1960</div></div><div class="tick" style="left:764.2173913043478px"><div class="stem"></div><div class="lbl">1970</div></div><div class="tick" style="left:837px"><div class="stem"></div><div class="lbl">1980</div></div><div class="marker" style="left:590.3913043478261px" title="1956: Vol. 35, No. 1"></div><div class="marker" style="left:505.47826086956525px" title="1949: Vol. 28, No. 8"></div><div class="marker" style="left:626.7826086956522px" title="1959: Vol. 38, No. 5"></div><div class="marker" style="left:529.7391304347825px" title="1951: Vol. 30, No. 2"></div><div class="marker" style="left:663.1739130434783px" title="1962: Vol. 40, No. 10"></div><div class="marker" style="left:566.1304347826087px" title="1954: Vol. 33, No. 8"></div><div class="marker" style="left:578.2608695652174px" title="1955: Vol. 34, No. 1"></div><div class="marker" style="left:667.1739130434783px" title="1962: Vol. 40, No. 11"></div><div class="marker" style="left:638.9130434782609px" title="1960: Vol. 38, No. 5"></div><div class="marker" style="left:541.8695652173914px" title="1952: Vol. 31, No. 7"></div><div class="marker" style="left:582.2608695652174px" title="1955: Vol. 34, No. 4"></div><div class="marker" style="left:699.5652173913043px" title="1965: Vol. 43, No. 5"></div><div class="marker" style="left:651.0434782608696px" title="1961: Vol. 39, No. 1"></div><div class="marker" style="left:570.1304347826087px" title="1954: Vol. 33, No. 5"></div><div class="marker" style="left:533.7391304347825px" title="1951: Vol. 30, No. 8"></div><div class="marker" style="left:642.9130434782609px" title="1960: Vol. 38, No. 2"></div><div class="marker" style="left:646.9130434782609px" title="1960: Vol. 38, No. 4"></div><div class="marker" style="left:630.7826086956522px" title="1959: Vol. 38, No. 4"></div><div class="marker" style="left:602.5217391304348px" title="1957: Vol. 36, No. 6"></div><div class="marker" style="left:655.0434782608696px" title="1961: Vol. 40, No. 6"></div><div class="marker" style="left:554px" title="1953: Vol. 32, No. 3"></div><div class="marker" style="left:671.1739130434783px" title="1962: Vol. 40, No. 7"></div><div class="marker" style="left:558px" title="1953: Vol. 32, No. 4"></div><div class="marker" style="left:586.2608695652174px" title="1955: Vol. 34, No. 2"></div><div class="marker" style="left:663.1739130434783px" title="1962: Vol. 40, No. 8"></div><div class="marker" style="left:667.1739130434783px" title="1962: Vol. 40, No. 9"></div><div class="marker" style="left:545.8695652173914px" title="1952: Vol. 31, No. 8"></div><div class="marker" style="left:578.2608695652174px" title="1955: Vol. 34, No. 5"></div><div class="marker" style="left:614.6521739130434px" title="1958: Vol. 37, No. 1"></div><div class="marker" style="left:618.6521739130434px" title="1958: Vol. 37, No. 8"></div><div class="marker" style="left:582.2608695652174px" title="1955: Vol. 34, No. 8"></div><div class="marker" style="left:549.8695652173914px" title="1952: Vol. 31, No. 2"></div><div class="marker" style="left:509.47826086956525px" title="1949: Vol. 28, No. 4"></div><div class="marker" style="left:562px" title="1953: Vol. 32, No. 2"></div><div class="marker" style="left:513.4782608695652px" title="1949: Vol. 28, No. 5"></div><div class="marker" style="left:505.47826086956525px" title="1949: Vol. 28, No. 6"></div><div class="marker" style="left:509.47826086956525px" title="1949: Vol. 28, No. 2"></div><div class="marker" style="left:513.4782608695652px" title="1949: Vol. 28, No. 3"></div><div class="marker" style="left:505.47826086956525px" title="1949: Vol. 28, No. 7"></div><div class="marker" style="left:493.3478260869565px" title="1948: Vol. 27, No. 4"></div><div class="marker" style="left:509.47826086956525px" title="1949: Vol. 28, No. 1"></div><div class="marker" style="left:772.3478260869565px" title="1971: Vol. 48, No. 4"></div><div class="marker" style="left:735.9565217391305px" title="1968: Vol. 48, No. 1"></div><div class="marker" style="left:723.8260869565217px" title="1967: Vol. 46, No. 2"></div><div class="marker" style="left:703.5652173913043px" title="1965: Vol. 43, No. 1"></div><div class="marker" style="left:796.608695652174px" title="1973: Vol. 49, No. 1"></div><div class="marker" style="left:687.4347826086956px" title="1964: Vol. 42, No. 6"></div><div class="marker" style="left:691.4347826086956px" title="1964: Vol. 42, No. 3"></div><div class="marker" style="left:675.304347826087px" title="1963: Vol. 41, No. 3"></div><div class="marker" style="left:695.4347826086956px" title="1964: Vol. 42, No. 7"></div><div class="marker" style="left:679.304347826087px" title="1963: Vol. 41, No. 7"></div><div class="marker" style="left:727.8260869565217px" title="1967: Vol. 46, No. 3"></div><div class="marker" style="left:760.2173913043478px" title="1970: Vol. 48, No. 2"></div><div class="marker" style="left:683.304347826087px" title="1963: Vol. 41, No. 4"></div><div class="marker" style="left:675.304347826087px" title="1963: Vol. 41, No. 5"></div><div class="marker" style="left:707.5652173913043px" title="1965: Vol. 43, No. 4"></div><div class="marker" style="left:699.5652173913043px" title="1965: Vol. 43, No. 3"></div><div class="marker" style="left:703.5652173913043px" title="1965: Vol. 43, No. 2"></div><div class="marker" style="left:671.1739130434783px" title="1962: Vol. 40, No. 12"></div><div class="marker" style="left:711.6956521739131px" title="1966: Vol. 44, No. 1"></div><div class="marker" style="left:687.4347826086956px" title="1964: Vol. 42, No. 5"></div><div class="marker" style="left:784.4782608695651px" title="1972: Vol. 48, No. 5"></div><div class="marker" style="left:731.8260869565217px" title="1967: Vol. 46, No. 1"></div><div class="marker" style="left:691.4347826086956px" title="1964: Vol. 42, No. 4"></div><div class="marker" style="left:679.304347826087px" title="1963: Vol. 41, No. 6"></div><div class="marker" style="left:739.9565217391305px" title="1968: Vol. 47, No. 1"></div><div class="marker" style="left:776.3478260869565px" title="1971: Vol. 48, No. 3"></div><div class="marker" style="left:723.8260869565217px" title="1967: Vol. 46, No. 4"></div><div class="marker" style="left:715.6956521739131px" title="1966: Vol. 44, No. 2"></div><div class="marker" style="left:695.4347826086956px" title="1964: Vol. 42, No. 8"></div><div class="marker" style="left:687.4347826086956px" title="1964: Vol. 42, No. 2"></div><div class="marker" style="left:691.4347826086956px" title="1964: Vol. 42, No. 1"></div><div class="marker" style="left:683.304347826087px" title="1963: Vol. 41, No. 2"></div><div class="marker" style="left:675.304347826087px" title="1963: Vol. 41, No. 1"></div></div></div></div></div>
+    </section>
+
+  <script>
+    // Placeholder data for each state
+    const stateData = {
+      "TX": {
+        title: "TEXAS",
+        orgs: [
+          "Colored Teachers State Association of Texas, 1885-1955",
+          "Teachers State Association of Texas, 1955-1966"
+        ],
+        publications: [
+          { name: "Texas Standard (1922-1967)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "AR": {
+        title: "ARKANSAS",
+        orgs: [
+          "Arkansas Colored Teachers Association, 1900-1957"
+        ],
+        publications: [
+          { name: "Arkansas Teacher (1920-1955)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "LA": {
+        title: "LOUISIANA",
+        orgs: [
+          "Louisiana Colored Teachers Association, 1910-1960"
+        ],
+        publications: [
+          { name: "Louisiana Educator (1930-1959)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "MS": {
+        title: "MISSISSIPPI",
+        orgs: [
+          "Mississippi Negro Teachers Association, 1925-1969"
+        ],
+        publications: [
+          { name: "Mississippi Teacher (1940-1968)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "AL": {
+        title: "ALABAMA",
+        orgs: [
+          "Alabama Association of Teachers in Colored Schools, 1922-1961"
+        ],
+        publications: [
+          { name: "Alabama Journal (1930-1961)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "GA": {
+        title: "GEORGIA",
+        orgs: [
+          "Georgia Association of Educators in Colored Schools, 1915-1959"
+        ],
+        publications: [
+          { name: "Georgia Educator (1940-1959)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "FL": {
+        title: "FLORIDA",
+        orgs: [
+          "Florida Educators' Association, 1926-1967"
+        ],
+        publications: [
+          { name: "Florida Standard (1950-1967)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "MO": {
+        title: "MISSOURI",
+        orgs: [
+          "Missouri Negro Teachers Association, 1930-1965"
+        ],
+        publications: [
+          { name: "Missouri Bulletin (1940-1965)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "OK": {
+        title: "OKLAHOMA",
+        orgs: [
+          "Oklahoma Association of Teachers in Colored Schools, 1910-1952"
+        ],
+        publications: [
+          { name: "Oklahoma Chronicle (1920-1952)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "TN": {
+        title: "TENNESSEE",
+        orgs: [
+          "Tennessee Colored Teachers Association, 1915-1967"
+        ],
+        publications: [
+          { name: "Tennessee Teacher (1925-1967)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      },
+      "KY": {
+        title: "KENTUCKY",
+        orgs: [
+          "Kentucky Association of Teachers in Colored Schools, 1921-1959"
+        ],
+        publications: [
+          { name: "Kentucky Journal (1930-1959)" }
+        ],
+        pubLink: "#",
+        moreLink: "#"
+      }
+    };
+
+    const sidebar = document.getElementById('sidebar');
+
+    function showSidebarForState(stateID) {
+      const info = stateData[stateID];
+      if (!info) return;
+      // Highlight selected state
+      document.querySelectorAll('.state').forEach(st => st.classList.remove('selected'));
+      const el = document.getElementById(stateID);
+      el && el.classList.add('selected');
+
+      sidebar.innerHTML = `
+        <h2>${info.title}</h2>
+        <div><b>Organization Names</b></div>
+        <ul>${info.orgs.map(o => `<li>${o}</li>`).join('')}</ul>
+        <div style="margin-top:20px;"><b>Publications</b></div>
+        <ul>${info.publications.map(p => `<li>${p.name}</li>`).join('')}</ul>
+        <a href="${info.pubLink}" class="sidebar-btn" target="_blank">BROWSE THE ARCHIVE: ${info.title}</a>
+        <a href="${info.moreLink}" class="sidebar-btn" target="_blank">ABOUT ${info.title} COLORED TEACHER ASSOCIATIONS</a>
+      `;
+      sidebar.classList.add('active');
+    }
+
+    // Add event listeners to states
+    document.querySelectorAll('.state').forEach(st => {
+      st.parentNode.addEventListener('click', function(e) {
+        const stateID = st.id;
+        showSidebarForState(stateID);
+      });
+      st.parentNode.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const stateID = st.id;
+          showSidebarForState(stateID);
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Optional: Pre-select Texas on load
+    // showSidebarForState('TX');
+
+  </script>
+</body>
+</html>
